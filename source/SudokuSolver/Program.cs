@@ -7,7 +7,7 @@ namespace SudokuSolver
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             string path = @"D:\DotNet\SudokuSolver\samples\Classic\Simple00_3x3.sud";
             var sudoku = new SudokuReader().ReadFrom(path);
