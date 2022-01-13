@@ -19,6 +19,8 @@ namespace Application.Services
                 new NonRepeatingRowDigitsBasicRule(),
                 new NonRepeatingColumnDigitsBasicRule(),
                 new NonRepeatingBlockDigitsBasicRule(),
+                new SinglePossiblePositionInARowRule(),
+                new SinglePossiblePositionInAColumnRule(),
             };
         }
 
@@ -47,7 +49,8 @@ namespace Application.Services
 
             Console.WriteLine(sudoku);
 
-            throw new NotImplementedException();
+            //todo
+            return null;
         }
     }
 }

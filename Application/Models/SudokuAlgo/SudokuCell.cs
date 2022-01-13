@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Infrastructure;
 using Application.MiscTodo;
 
 namespace Application.Models.SudokuAlgo
@@ -56,6 +57,20 @@ namespace Application.Models.SudokuAlgo
                 return CandidateRemovalResult.RemovedAndHasSingleValue;
             }
             return CandidateRemovalResult.Removed;
+        }
+
+        //todo protect digit
+        public void SetValue(int digit)
+        {
+            Value = digit;
+            RemainingCandidates = 1;
+            for (int i = 0; i < 9; i++)
+            {
+                if (i + 1 == digit)
+                    Candidates[i] = true;
+                else
+                    Candidates[i] = false;
+            }
         }
 
         private int ValueOfSingleCandidate()

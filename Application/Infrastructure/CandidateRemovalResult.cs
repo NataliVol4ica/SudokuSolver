@@ -1,4 +1,4 @@
-﻿namespace Application.MiscTodo
+﻿namespace Application.Infrastructure
 {
     public enum CandidateRemovalResult
     {

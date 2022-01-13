@@ -15,11 +15,13 @@ Project development can stop at any of these milestones:
 
 File validation is not scheduled for specific milestone, as well as tests, so app is allowed to crash for invalid file format
 
+High performance is not a goal (I will not fight for miliseconds, however 100sec is still too much)
+
 ##Ideas:
 
 - support different types of sudoku (classic, XV, cages, etc)
 
--- how to read additional info from file?
+- - how to read additional info from file?
 
 - support custom rules
 
