@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.MiscTodo;
 
 namespace Application.Models.SudokuAlgo
 {
@@ -8,15 +9,20 @@ namespace Application.Models.SudokuAlgo
     public class SudokuCell
     {
         private const int MaxDigits = 9;
-        public bool HasValue => Value.HasValue;
-        public int? Value { get; private set; }
-        public List<bool> Assumptions { get; private set; }
+        public bool HasValue => Value > 0;
+        public int Value { get; private set; } = -1;
+        public List<bool> Candidates { get; private set; }
+        public int RemainingCandidates { get; private set; } = 0;
+
         public SudokuCell(int value)
         {
             if (IsValidDigit(value))
                 Value = value;
             else if (value == 0)
-                Assumptions = Enumerable.Repeat(true, 9).ToList();
+            {
+                Candidates = Enumerable.Repeat(true, 9).ToList(); //todo 9
+                RemainingCandidates = 9;
+            }
             else
                 throw new ArgumentException($"Cell with value '{value}' cannot exist.");
         }
@@ -24,15 +30,37 @@ namespace Application.Models.SudokuAlgo
         public bool IsPossible(int digit)
         {
             if (IsValidDigit(digit))
-                return Assumptions[digit];
+                return Candidates[digit];
             return false;
         }
 
         public override string ToString()
         {
-            return Value?.ToString() ?? ".";
+            return HasValue ? Value.ToString() : ".";
         }
 
         private bool IsValidDigit(int digit) => digit > 0 && digit <= MaxDigits;
+
+        //todo protect index
+        public CandidateRemovalResult RemoveCandidate(int digit)
+        {
+            var index = digit - 1;
+            if (Candidates[index] == false)
+                return CandidateRemovalResult.NotRemoved;
+            Candidates[index] = false;
+            RemainingCandidates--;
+
+            if (RemainingCandidates == 1)
+            {
+                Value = ValueOfSingleCandidate();
+                return CandidateRemovalResult.RemovedAndHasSingleValue;
+            }
+            return CandidateRemovalResult.Removed;
+        }
+
+        private int ValueOfSingleCandidate()
+        {
+            return Candidates.IndexOf(true) + 1;
+        }
     }
 }

@@ -1,7 +1,11 @@
-﻿namespace Application.MiscTodo.AlgoRestrictions
+﻿using System.Collections.Generic;
+using System.Drawing;
+using Application.Models.SudokuAlgo;
+
+namespace Application.MiscTodo.AlgoRestrictions
 {
     public abstract class BasicRule
     {
-       //todo
+        public abstract List<Point> ApplyRule(Sudoku sudoku, Point position);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using Application.Extensions;
 
 namespace Application.Models.SudokuAlgo
@@ -63,7 +64,29 @@ namespace Application.Models.SudokuAlgo
 
         public override string ToString()
         {
-            throw new NotImplementedException();
+            var result = new StringBuilder();
+            for (int i = 0; i < 9; i++)
+            {
+                if (i != 0 && i % 3 == 0)
+                    result.Append("------+------+------\n");
+                for (int j = 0; j < 9; j++)
+                {
+                    if (j < 8)
+                    {
+                        result.Append(_cells[i, j].ToString() + " ");
+                        if (j > 0 && j % 3 == 2)
+                            result.Append('|');
+                    }
+                    else
+                    {
+                        result.Append(_cells[i, j].ToString());
+                    }
+                }
+
+                result.Append('\n');
+            }
+
+            return result.ToString();
         }
 
         public SudokuCell this[int index1, int index2]

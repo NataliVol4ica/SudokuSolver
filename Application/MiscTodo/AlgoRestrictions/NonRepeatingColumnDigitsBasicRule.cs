@@ -4,7 +4,7 @@ using Application.Models.SudokuAlgo;
 
 namespace Application.MiscTodo.AlgoRestrictions
 {
-    public class NonRepeatingRowDigitsBasicRule : BasicRule
+    public class NonRepeatingColumnDigitsBasicRule : BasicRule
     {
         public override List<Point> ApplyRule(Sudoku sudoku, Point position)
         {
@@ -14,16 +14,16 @@ namespace Application.MiscTodo.AlgoRestrictions
             if (!cellUnderRule.HasValue)
                 return cellsThatAcquiredValue;
 
-            var row = sudoku.Row(position);
-            for (int i = 0; i < row.Length; i++)
+            var column = sudoku.Column(position);
+            for (int i = 0; i < column.Length; i++)
             {
-                var rowCell = row[i];
-                if (cellUnderRule == rowCell)
+                var columnCell = column[i];
+                if (cellUnderRule == columnCell)
                     continue;
-                if (rowCell.HasValue)
+                if (columnCell.HasValue)
                     continue;
-                if (rowCell.RemoveCandidate(cellUnderRule.Value) == CandidateRemovalResult.RemovedAndHasSingleValue)
-                    cellsThatAcquiredValue.Add(new Point(position.X, i));
+                if (columnCell.RemoveCandidate(cellUnderRule.Value) == CandidateRemovalResult.RemovedAndHasSingleValue)
+                    cellsThatAcquiredValue.Add(new Point(i, position.Y));
             }
 
             return cellsThatAcquiredValue;

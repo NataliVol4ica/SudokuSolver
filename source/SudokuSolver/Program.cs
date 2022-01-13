@@ -11,8 +11,9 @@ namespace SudokuSolver
         {
             string path = @"D:\DotNet\SudokuSolver\samples\Classic\Simple00_3x3.sud";
             var sudoku = new SudokuReader().ReadFrom(path);
+            Console.WriteLine(sudoku);
             var solution = new Solver().Solve(sudoku);
-            new UserConsole().Start(solution);
+            //new UserConsole().Start(solution);
             Console.ReadKey();
         }
     }
