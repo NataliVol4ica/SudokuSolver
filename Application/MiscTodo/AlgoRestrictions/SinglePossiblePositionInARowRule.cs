@@ -7,7 +7,7 @@ namespace Application.MiscTodo.AlgoRestrictions
 {
     public class SinglePossiblePositionInARowRule : BasicRule
     {
-        public override List<Point> ApplyRule(Sudoku sudoku, Point position)
+        public override List<Point> ApplyRule(Sudoku sudoku, Point position, SolutionHistory history)
         {
             var cellsThatAcquiredValue = new List<Point>();
             var row = sudoku.Row(position);
@@ -39,6 +39,7 @@ namespace Application.MiscTodo.AlgoRestrictions
                 {
                     sudoku[statistics[digit].LatestPosition].SetValue(digit + 1);
                     cellsThatAcquiredValue.Add(statistics[digit].LatestPosition);
+                    history.AddEntry(sudoku, statistics[digit].LatestPosition, digit + 1, "this is the only cell in a ROW that can have this value");
                 }
             }
 

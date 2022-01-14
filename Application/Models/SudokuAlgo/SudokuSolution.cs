@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace Application.Models.SudokuAlgo
+﻿namespace Application.Models.SudokuAlgo
 {
     public class SudokuSolution
     {
-        public bool IsSolved { get; set; } = false;
+        public bool IsSolved => Sudoku.IsSolved();
 
-        public Sudoku SolvedSudoku { get; set; }
+        public Sudoku Sudoku { get; set; }
 
-        public List<SolutionStep> Steps { get; set; } 
+        public SolutionHistory History { get; set; } 
     }
 }

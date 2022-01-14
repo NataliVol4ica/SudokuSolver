@@ -28,6 +28,11 @@ namespace Application.Models.SudokuAlgo
                 throw new ArgumentException($"Cell with value '{value}' cannot exist.");
         }
 
+        public SudokuCell Clone()
+        {
+            return new SudokuCell(Value == -1 ? 0 : Value);
+        }
+
         public bool IsPossible(int digit)
         {
             if (IsValidDigit(digit))
@@ -53,10 +58,15 @@ namespace Application.Models.SudokuAlgo
 
             if (RemainingCandidates == 1)
             {
-                Value = ValueOfSingleCandidate();
+                SetOnlyPossibleValue();
                 return CandidateRemovalResult.RemovedAndHasSingleValue;
             }
             return CandidateRemovalResult.Removed;
+        }
+
+        private void SetOnlyPossibleValue()
+        {
+            Value = Candidates.IndexOf(true) + 1;
         }
 
         //todo protect digit
@@ -71,11 +81,6 @@ namespace Application.Models.SudokuAlgo
                 else
                     Candidates[i] = false;
             }
-        }
-
-        private int ValueOfSingleCandidate()
-        {
-            return Candidates.IndexOf(true) + 1;
         }
     }
 }

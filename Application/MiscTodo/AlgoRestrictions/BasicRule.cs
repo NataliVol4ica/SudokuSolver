@@ -6,6 +6,6 @@ namespace Application.MiscTodo.AlgoRestrictions
 {
     public abstract class BasicRule
     {
-        public abstract List<Point> ApplyRule(Sudoku sudoku, Point position);
+        public abstract List<Point> ApplyRule(Sudoku sudoku, Point position, SolutionHistory history);
     }
 }

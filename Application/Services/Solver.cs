@@ -26,7 +26,7 @@ namespace Application.Services
 
         public SudokuSolution Solve(Sudoku sudoku)
         {
-            //queue of cells to check
+           var history = new SolutionHistory();
             var queue = new Queue<Point>();
             for (int i = 0; i < 9; i++) //todo 9
             {
@@ -41,16 +41,18 @@ namespace Application.Services
             {
                 foreach (var rule in _basicRules)
                 {
-                    var acquiredValues = rule.ApplyRule(sudoku, cellPosition);
+                    //todo. combine history with acquired values ?!
+                    var acquiredValues = rule.ApplyRule(sudoku, cellPosition, history);
                     if (acquiredValues.Any())
                         queue.EnqueueRange(acquiredValues);
                 }
             }
 
-            Console.WriteLine(sudoku);
-
-            //todo
-            return null;
+            return new SudokuSolution
+            {
+                History = history,
+                Sudoku = sudoku
+            };
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Application.MiscTodo.AlgoRestrictions
 {
     public class NonRepeatingColumnDigitsBasicRule : BasicRule
     {
-        public override List<Point> ApplyRule(Sudoku sudoku, Point position)
+        public override List<Point> ApplyRule(Sudoku sudoku, Point position, SolutionHistory history)
         {
             var cellsThatAcquiredValue = new List<Point>();
             var cellUnderRule = sudoku[position];
@@ -24,7 +24,11 @@ namespace Application.MiscTodo.AlgoRestrictions
                 if (columnCell.HasValue)
                     continue;
                 if (columnCell.RemoveCandidate(cellUnderRule.Value) == CandidateRemovalResult.RemovedAndHasSingleValue)
-                    cellsThatAcquiredValue.Add(new Point(i, position.Y));
+                {
+                    var pos = new Point(i, position.Y);
+                    cellsThatAcquiredValue.Add(pos);
+                    history.AddEntry(sudoku, pos, columnCell.Value, "the digit is the only candidate that can be put in this cell");
+                }
             }
 
             return cellsThatAcquiredValue;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -22,6 +21,14 @@ namespace Application.Models.SudokuAlgo
         public Sudoku(List<List<int>> source)
         {
             _cells = source.Select(r => r.Select(d=> new SudokuCell(d)).ToArray()).ToArray().ToMultidimensional();
+            _rows = Enumerable.Range(0, 9).Select(v => CreateRow(_cells, v)).ToList();
+            _columns = Enumerable.Range(0, 9).Select(v => CreateColumn(_cells, v)).ToList();
+            _blocks = Enumerable.Range(0, 9).Select(v => CreateBlock(_cells, v / 3, v % 3)).ToList();
+        }
+        private Sudoku(SudokuCell[,] source)
+        {
+            _cells = source;
+
             _rows = Enumerable.Range(0, 9).Select(v => CreateRow(_cells, v)).ToList();
             _columns = Enumerable.Range(0, 9).Select(v => CreateColumn(_cells, v)).ToList();
             _blocks = Enumerable.Range(0, 9).Select(v => CreateBlock(_cells, v / 3, v % 3)).ToList();
@@ -62,6 +69,25 @@ namespace Application.Models.SudokuAlgo
 
         #endregion Rows, Columns and Blocks
 
+        public SudokuCell[,] DeepCopyCells()
+        {
+            var cells = new SudokuCell[9, 9];
+            for (int i = 0; i < 9; i++) //todo 9
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    cells[i, j] = _cells[i, j].Clone();
+                }
+            }
+
+            return cells;
+        }
+
+        public Sudoku Clone()
+        {
+            return new Sudoku(DeepCopyCells());
+        }
+
         public override string ToString()
         {
             var result = new StringBuilder();
@@ -95,5 +121,19 @@ namespace Application.Models.SudokuAlgo
         }
 
         public SudokuCell this[Point position] => this[position.X, position.Y];
+
+        public bool IsSolved()
+        {
+            for (int i = 0; i < 9; i++) //todo 9
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (!_cells[i, j].HasValue)
+                        return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Application.MiscTodo.FileAccess;
+using Application.MiscTodo.UserInput;
 using Application.Services;
 
 namespace SudokuSolver
@@ -10,9 +11,13 @@ namespace SudokuSolver
         {
             string path = @"D:\DotNet\SudokuSolver\samples\Classic\BestClaimedByYoutube00_3x3.sud";
             var sudoku = new SudokuReader().ReadFrom(path);
-            Console.WriteLine(sudoku);
+            SudokuPrinter.Print(sudoku);
+            Console.WriteLine($"[{DateTime.Now}] Solving sudoku.");
+            Console.WriteLine("\n===========================================================");
             var solution = new Solver().Solve(sudoku);
-            //new UserConsole().Start(solution);
+            Console.WriteLine($"[{DateTime.Now}] Solving is complete. See the results:");
+            Console.WriteLine("\n===========================================================");
+            new UserConsole().Start(solution);
             Console.ReadKey();
         }
     }
