@@ -23,7 +23,7 @@ namespace Application.Models.SudokuAlgo
         private int _remainingCandidates = 0;
 
         public bool HasValue => Value > 0;
-        public bool ReadyToBeSet => HasValue && _remainingCandidates == 1;
+        public bool ReadyToBeSet => !HasValue && _remainingCandidates == 1;
 
         private static event Action<int, Context> OnValueSet;
 

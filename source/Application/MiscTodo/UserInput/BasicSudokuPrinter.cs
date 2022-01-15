@@ -4,7 +4,7 @@ using Application.Models.SudokuAlgo;
 
 namespace Application.MiscTodo.UserInput
 {
-    public static class SudokuPrinter
+    public static class BasicSudokuPrinter
     {
         public static void Print(Sudoku sudoku, Point? changedCell = null)
         {

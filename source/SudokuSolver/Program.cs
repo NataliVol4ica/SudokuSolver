@@ -14,7 +14,7 @@ namespace SudokuSolver
             string path = @"D:\DotNet\SudokuSolver\samples\Classic\Simple00_3x3.sud";
             var context = new Context();
             new SudokuReader(context).ReadFrom(path);
-            SudokuPrinter.Print(context.SudokuUnderSolution);
+            ExtendedSudokuPrinter.Print(context.SudokuUnderSolution);
             Console.WriteLine($"[{DateTime.Now}] Solving sudoku.");
             Console.WriteLine("\n===========================================================");
             new Solver(context).Solve();

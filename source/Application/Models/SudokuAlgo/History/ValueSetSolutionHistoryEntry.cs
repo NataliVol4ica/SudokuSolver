@@ -30,10 +30,15 @@ namespace Application.Models.SudokuAlgo.History
             return $"Step {Id}. A digit '{Digit}' has been placed at {Position.ToSudokuCoords()} because {Reason}";
         }
 
-        public override void Print()
+        public override void Print(bool detailedMode = false)
         {
             Console.WriteLine(this);
-            SudokuPrinter.Print(SudokuSnapshot, Position);
+            if (detailedMode)
+                ExtendedSudokuPrinter.Print(SudokuSnapshot, Position);
+            else
+            {
+                BasicSudokuPrinter.Print(SudokuSnapshot, Position);
+            }
         }
     }
 }
