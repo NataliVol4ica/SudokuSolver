@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using Application.Extensions;
 
 namespace Application.Models.SudokuAlgo
 {
@@ -18,22 +17,63 @@ namespace Application.Models.SudokuAlgo
         private readonly List<SudokuCell[]> _columns;
         private readonly List<SudokuCell[,]> _blocks;
 
-        public Sudoku(List<List<int>> source)
+        #region Constructors and Factories
+        private Sudoku()
         {
-            _cells = source.Select(r => r.Select(d=> new SudokuCell(d)).ToArray()).ToArray().ToMultidimensional();
+            _cells = InitializeCells();
             _rows = Enumerable.Range(0, 9).Select(v => CreateRow(_cells, v)).ToList();
             _columns = Enumerable.Range(0, 9).Select(v => CreateColumn(_cells, v)).ToList();
             _blocks = Enumerable.Range(0, 9).Select(v => CreateBlock(_cells, v / 3, v % 3)).ToList();
         }
+
+        private SudokuCell[,] InitializeCells()
+        {
+            var cells = new SudokuCell[9, 9];
+            for (int i = 0; i < 9; i++) //todo 9
+            {
+                for (int j = 0; j < 9; j++) //todo 9
+                {
+                    cells[i, j] = new SudokuCell();
+                }
+            }
+
+            return cells;
+        }
+
+        public void Initialize(List<List<int>> source, Context context)
+        {
+            for (int i = 0; i < 9; i++) //todo 9
+            {
+                for (int j = 0; j < 9; j++) //todo 9
+                {
+                    if (source[i][j] != 0)
+                    {
+                        context.CellUnderAction = new Point(i, j);
+                        _cells[i, j].SetValue(source[i][j], context);
+                    }
+                }
+            }
+        }
+        
+        //todo why duplicate main constructor?
         private Sudoku(SudokuCell[,] source)
         {
             _cells = source;
-
             _rows = Enumerable.Range(0, 9).Select(v => CreateRow(_cells, v)).ToList();
             _columns = Enumerable.Range(0, 9).Select(v => CreateColumn(_cells, v)).ToList();
             _blocks = Enumerable.Range(0, 9).Select(v => CreateBlock(_cells, v / 3, v % 3)).ToList();
         }
 
+        public static Sudoku Create(List<List<int>> source, Context context)
+        {
+            var result = new Sudoku();
+            context.SudokuUnderSolution = result;
+            result.Initialize(source, context);
+            return result;
+        }
+
+        #endregion Constructor
+        
         #region Rows, Columns and Blocks
 
         public SudokuCell[] Row(Point position) => _rows[position.X];

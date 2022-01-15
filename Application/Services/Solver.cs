@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Application.Extensions;
+﻿using System.Collections.Generic;
 using Application.MiscTodo.AlgoRestrictions;
-using Application.Models.SudokuAlgo;
+using Application.Models;
 
 namespace Application.Services
 {
     public class Solver
     {
-        private readonly List<BasicRule> _basicRules;
+        private static readonly List<BasicRule> _basicRules;
+        private readonly Context _context;
 
-        public Solver()
+        //todo
+        static Solver()
         {
             _basicRules = new List<BasicRule>
             {
@@ -24,35 +22,37 @@ namespace Application.Services
             };
         }
 
-        public SudokuSolution Solve(Sudoku sudoku)
+        public Solver(Context context)
         {
-           var history = new SolutionHistory();
-            var queue = new Queue<Point>();
-            for (int i = 0; i < 9; i++) //todo 9
-            {
-                for (int j = 0; j < 9; j++) //todo 9
-                {
-                    if (sudoku[i, j].HasValue)
-                        queue.Enqueue(new Point(i, j));
-                }
-            }
-
-            while (queue.TryDequeue(out var cellPosition))
-            {
-                foreach (var rule in _basicRules)
-                {
-                    //todo. combine history with acquired values ?!
-                    var acquiredValues = rule.ApplyRule(sudoku, cellPosition, history);
-                    if (acquiredValues.Any())
-                        queue.EnqueueRange(acquiredValues);
-                }
-            }
-
-            return new SudokuSolution
-            {
-                History = history,
-                Sudoku = sudoku
-            };
+            _context = context;
         }
+
+        public void Solve()
+        {
+            
+        }
+        
+        //record history for each CELL SET action. add candidates removal to history.
+
+        //0. PRE
+        //enqueue all filled cells.
+        //fill candidates for all of them
+        //RESULT: will be done during cell value set process
+
+        //1. CANDIDATES FILLING
+        //Scan sudoku. For every cell, where there is a single candidate, set the value. Trigger sudoku candidates update algo for single cell.
+        //repeat until scan adds 0 new records
+
+        //2. Rule set 1
+        //scan all rows, columns and blocks. If in one of them there is a single possible position for some digit , put it.
+
+        //3. Rule set 2 todo. 
+
+        //repeat 1-3 until no action can be performed
+
+        //todo: allow to switch simple/detailed sudoku mode.
+        //todo: more detailed sudoku table. Show candidates
+        //todo: more detailed history. Show all removed candidates when the cell is filled?
+        
     }
 }

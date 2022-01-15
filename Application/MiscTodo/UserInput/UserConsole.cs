@@ -1,4 +1,5 @@
 ﻿using System;
+using Application.Models;
 using Application.Models.SudokuAlgo;
 
 namespace Application.MiscTodo.UserInput
@@ -18,12 +19,12 @@ namespace Application.MiscTodo.UserInput
             Exit
         }
 
-        public void Start(SudokuSolution solution)
+        public void Start(Context solution)
         {
             //todo split into smaller methods
             Command command;
             
-            Console.WriteLine($"Sudoku is fully solved? {solution.Sudoku.IsSolved()}");
+            Console.WriteLine($"Sudoku is fully solved? {solution.SudokuUnderSolution.IsSolved()}");
             
             var firstEntry = solution.History.GetNextEntry();
             if (firstEntry is null)

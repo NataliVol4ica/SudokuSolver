@@ -1,43 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Application.Infrastructure;
-using Application.MiscTodo;
+using Application.MiscTodo.AlgoCandidatesSetters;
 
 namespace Application.Models.SudokuAlgo
 {
     //todo make it work for more or less than 9 digits
     public class SudokuCell
     {
+        static SudokuCell()
+        {
+            OnValueSet+= new RowCandidateSetter().Perform;
+            OnValueSet+= new ColumnCandidateSetter().Perform;
+            OnValueSet+= new BlockCandidateSetter().Perform;
+        }
+
         private const int MaxDigits = 9;
-        public bool HasValue => Value > 0;
+
         public int Value { get; private set; } = -1;
         public List<bool> Candidates { get; private set; }
-        public int RemainingCandidates { get; private set; } = 0;
 
-        public SudokuCell(int value)
+        private int _remainingCandidates = 0;
+
+        public bool HasValue => Value > 0;
+        public bool ReadyToBeSet => HasValue && _remainingCandidates == 1;
+
+        private static event Action<int, Context> OnValueSet;
+
+        public SudokuCell()
         {
-            if (IsValidDigit(value))
-                Value = value;
-            else if (value == 0)
-            {
-                Candidates = Enumerable.Repeat(true, 9).ToList(); //todo 9
-                RemainingCandidates = 9;
-            }
-            else
-                throw new ArgumentException($"Cell with value '{value}' cannot exist.");
+            Candidates = Enumerable.Repeat(true, 9).ToList(); //todo 9
+            _remainingCandidates = 9;
+        }
+
+        private SudokuCell(int value, List<bool> candidates, int remainingCandidates)
+        {
+            Candidates = new List<bool>(candidates);
+            Value = value;
+            _remainingCandidates = remainingCandidates;
+        }
+
+        public void RemoveCandidate(int digit)
+        {
+            ValidateDigit(digit);
+            var index = digit - 1;
+            if (Candidates[index] == false)
+                return;
+            Candidates[index] = false;
+            _remainingCandidates--;
+        }
+
+        public void SetValue(int digit, Context context)
+        {
+            ValidateDigit(digit);
+            Candidates = Enumerable.Repeat(false, 9).ToList();
+            _remainingCandidates = 0;
+            Value = digit;
+            OnValueSet(digit, context);
+        }
+
+        public bool TrySetValueByCandidates(Context context)
+        {
+            if (!ReadyToBeSet)
+                return false;
+            var digitToSet = Candidates.IndexOf(true) + 1;
+            SetValue(digitToSet, context);
+            return true;
         }
 
         public SudokuCell Clone()
         {
-            return new SudokuCell(Value == -1 ? 0 : Value);
-        }
-
-        public bool IsPossible(int digit)
-        {
-            if (IsValidDigit(digit))
-                return Candidates[digit];
-            return false;
+            return new SudokuCell(Value, Candidates, _remainingCandidates);
         }
 
         public override string ToString()
@@ -46,41 +79,10 @@ namespace Application.Models.SudokuAlgo
         }
 
         private bool IsValidDigit(int digit) => digit > 0 && digit <= MaxDigits;
-
-        //todo protect index
-        public CandidateRemovalResult RemoveCandidate(int digit)
+        private void ValidateDigit(int digit)
         {
-            var index = digit - 1;
-            if (Candidates[index] == false)
-                return CandidateRemovalResult.NotRemoved;
-            Candidates[index] = false;
-            RemainingCandidates--;
-
-            if (RemainingCandidates == 1)
-            {
-                SetOnlyPossibleValue();
-                return CandidateRemovalResult.RemovedAndHasSingleValue;
-            }
-            return CandidateRemovalResult.Removed;
-        }
-
-        private void SetOnlyPossibleValue()
-        {
-            Value = Candidates.IndexOf(true) + 1;
-        }
-
-        //todo protect digit
-        public void SetValue(int digit)
-        {
-            Value = digit;
-            RemainingCandidates = 1;
-            for (int i = 0; i < 9; i++)
-            {
-                if (i + 1 == digit)
-                    Candidates[i] = true;
-                else
-                    Candidates[i] = false;
-            }
+            if (!IsValidDigit(digit))
+                throw new Exception($"Digit {digit} cannot be set as cell value"); //todo custom exception type
         }
     }
 }
