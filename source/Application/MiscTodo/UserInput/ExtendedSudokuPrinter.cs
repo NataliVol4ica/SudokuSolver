@@ -20,7 +20,7 @@ namespace Application.MiscTodo.UserInput
                     {
                         for (int columnId = 0; columnId < 9; columnId++)
                         {
-                            PrintSudokuCell(cells[rowId, columnId], candidateRowId);
+                            PrintSudokuCell(cells[rowId, columnId], candidateRowId, IsCellChanged(rowId, columnId, changedCell));
 
                             if (columnId != 8)
                             {
@@ -30,7 +30,7 @@ namespace Application.MiscTodo.UserInput
                                     PrintCellVerticalDelimiter();
                             }
                         }
-                        PrintText("\n");
+                        PrintEndl();
                     }
                     if (blockCellRowId != 2)
                         PrintCellHorizontalDelimiter();
@@ -39,14 +39,14 @@ namespace Application.MiscTodo.UserInput
                 if (blockRowId != 2)
                     PrintBlockHorizontalDelimiter();
             }
-          
+
             //PrintHorizontalDigits();
-            
+
             //PrintHorizontalDigits();
-            PrintText("\n");
+            PrintEndl();
         }
 
-        private static void PrintSudokuCell(SudokuCell cell, int consoleRowId)
+        private static void PrintSudokuCell(SudokuCell cell, int consoleRowId, bool isChangedCell)
         {
             if (cell.HasValue)
             {
@@ -54,8 +54,7 @@ namespace Application.MiscTodo.UserInput
                     PrintText("   ");
                 else if (consoleRowId == 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    PrintText($" {cell} ");
+                    PrintCellValue($" {cell} ", isChangedCell);
                     SetDefaultColors();
                 }
             }
@@ -77,8 +76,9 @@ namespace Application.MiscTodo.UserInput
         private static void PrintBlockHorizontalDelimiter()
         {
             Console.BackgroundColor = ConsoleColor.DarkGray;
-            PrintText("===========++===========++===========\n");
+            PrintText("===========++===========++===========");
             SetDefaultColors();
+            PrintEndl();
         }
 
         private static void PrintCellHorizontalDelimiter()
@@ -91,7 +91,8 @@ namespace Application.MiscTodo.UserInput
             Console.BackgroundColor = ConsoleColor.DarkGray;
             PrintText("++");
             SetDefaultColors();
-            PrintText("---+---+---\n");
+            PrintText("---+---+---");
+            PrintEndl();
         }
 
         private static void PrintBlockVerticalDelimiter()
@@ -110,7 +111,7 @@ namespace Application.MiscTodo.UserInput
             PrintBorder("   ");
             PrintText(" ------+-------+------");
             PrintBorder("   ");
-            PrintText(" \n");
+            PrintEndl();
         }
 
         private static void PrintHorizontalDigits()
@@ -127,14 +128,14 @@ namespace Application.MiscTodo.UserInput
             PrintText( "\n");
         }
 
-        //private static bool IsCellChanged(int x, int y, Point? changedCell)
-        //{
-        //    if (!changedCell.HasValue)
-        //        return false;
-        //    if (changedCell.Value.X == x && changedCell.Value.Y == y)
-        //        return true;
-        //    return false;
-        //}
+        private static bool IsCellChanged(int x, int y, Point? changedCell)
+        {
+            if (!changedCell.HasValue)
+                return false;
+            if (changedCell.Value.X == x && changedCell.Value.Y == y)
+                return true;
+            return false;
+        }
 
         private static void PrintBorder(string text)
         {
@@ -143,16 +144,18 @@ namespace Application.MiscTodo.UserInput
             Console.Write(text);
             SetDefaultColors();
         }
-        private static void PrintField(string text, bool isChangedCell)
+
+        private static void PrintCellValue(string text, bool isChangedCell)
         {
-            //if (!isChangedCell)
-            //{
-               Console.Write(text);
-               return;
-            //}
-            //Console.ForegroundColor = ConsoleColor.Green;
-            //Console.Write(text);
-            //SetDefaultColors();
+            if (!isChangedCell)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(text);
+                return;
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(text);
+            SetDefaultColors();
         }
 
         private static void SetDefaultColors()
@@ -161,6 +164,13 @@ namespace Application.MiscTodo.UserInput
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
+        //hack to fix console colors
+        private static void PrintEndl()
+        {
+            SetDefaultColors();
+            Console.Write(" ");
+            Console.WriteLine();
+        }
         private static void PrintText(string text)
         {
             Console.Write(text);

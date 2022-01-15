@@ -19,6 +19,8 @@ namespace Application.MiscTodo.UserInput
             Exit
         }
 
+        private bool detailedMode = true;
+
         public void Start(Context solution)
         {
             //todo split into smaller methods
@@ -80,12 +82,11 @@ namespace Application.MiscTodo.UserInput
         {
             if (entry is null)
                 return;
-            var stepText = entry.ToString();
             if (entry.IsLast)
                 Console.Write("FINAL.");
             else if (entry.IsFirst)
                 Console.Write("FIRST.");
-            entry.Print();
+            entry.Print(detailedMode);
             Console.WriteLine("\n");
         }
 

@@ -69,7 +69,7 @@ namespace Application.Models.SudokuAlgo
             if (!ReadyToBeSet)
                 return false;
             var digitToSet = Candidates.IndexOf(true) + 1;
-            SetValue(digitToSet, context, true);
+            SetValue(digitToSet, context, true, "there is no other digit that can be put in this cell");
             return true;
         }
 

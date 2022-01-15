@@ -47,7 +47,7 @@ namespace Application.Services
                 for (int j = 0; j < 9; j++) //todo 9
                 {
                     _context.CellUnderAction = new Point(i, j);
-                    //if candidate has been found - start from the very beginning? //todo decide. If yes - rename method.
+                    //if candidate has been found - start from the very beginning? //todo decide. If no - rename method.
                     if (_context.SudokuUnderSolution[i, j].TrySetValueByCandidates(_context))
                         return true;
                 }
