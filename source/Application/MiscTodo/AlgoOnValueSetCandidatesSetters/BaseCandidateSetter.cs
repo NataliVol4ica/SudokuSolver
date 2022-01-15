@@ -1,6 +1,6 @@
 ﻿using Application.Models;
 
-namespace Application.MiscTodo.AlgoCandidatesSetters
+namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
 {
     public abstract class BaseCandidateSetter
     {

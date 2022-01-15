@@ -1,20 +1,29 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
-namespace Application.Models.SudokuAlgo
+namespace Application.Models.SudokuAlgo.History
 {
     public class SolutionHistory
     {
-        public List<SolutionHistoryEntry> Entries { get;} = new List<SolutionHistoryEntry>(81); //todo 9
+        public List<ValueSetSolutionHistoryEntry> Entries { get;} = new List<ValueSetSolutionHistoryEntry>(81); //todo 9
 
         private int LastEntryId => Entries.Count - 1;
         private int FirstEntryId => 0;
         private int PreviouslyViewedEntryId { get; set; } = -1;
 
-        public void AddEntry(Sudoku snapshot, Point pos, int digit, string reason)
+        public void AddSetValueEntry(int digit, Context context, string reason)
         {
-            Entries.Add(new SolutionHistoryEntry(pos, digit, reason, Entries.Count + 1, snapshot));
+            Entries.Add(new ValueSetSolutionHistoryEntry(
+                context.CellUnderAction,
+                digit,
+                reason, 
+                Entries.Count + 1, 
+                context.SudokuUnderSolution,
+                context.HistoryEntryLevel));
         }
+        //public void AddCandidateEntry(int digit, Context context)
+        //{
+        //    Entries.Add(new SolutionHistoryEntry(context.CellUnderAction, digit, reason, Entries.Count + 1, context.SudokuUnderSolution));
+        //}
 
         public SolutionHistoryEntryForPrint GetPreviousEntry()
         {
@@ -58,7 +67,7 @@ namespace Application.Models.SudokuAlgo
             return ApplyFirstLastChecks(entry);
         }
 
-        private SolutionHistoryEntryForPrint ApplyFirstLastChecks(SolutionHistoryEntry entry)
+        private SolutionHistoryEntryForPrint ApplyFirstLastChecks(ValueSetSolutionHistoryEntry entry)
         {
             if (PreviouslyViewedEntryId == LastEntryId)
                 return new SolutionHistoryEntryForPrint(entry){IsLast = true};

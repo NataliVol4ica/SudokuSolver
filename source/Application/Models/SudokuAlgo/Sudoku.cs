@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Application.Tools.Enums;
 
 namespace Application.Models.SudokuAlgo
 {
@@ -49,7 +50,8 @@ namespace Application.Models.SudokuAlgo
                     if (source[i][j] != 0)
                     {
                         context.CellUnderAction = new Point(i, j);
-                        _cells[i, j].SetValue(source[i][j], context);
+                        context.HistoryEntryLevel = HistoryEntryLevel.SudokuInit;
+                        _cells[i, j].SetValue(source[i][j], context, false);
                     }
                 }
             }

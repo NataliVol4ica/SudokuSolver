@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Application.MiscTodo.AlgoCandidatesSetters;
+using Application.MiscTodo.AlgoOnValueSetCandidatesSetters;
 
 namespace Application.Models.SudokuAlgo
 {
@@ -40,23 +40,28 @@ namespace Application.Models.SudokuAlgo
             _remainingCandidates = remainingCandidates;
         }
 
-        public void RemoveCandidate(int digit)
+        public void RemoveCandidate(int digit, Context context)
         {
             ValidateDigit(digit);
             var index = digit - 1;
             if (Candidates[index] == false)
                 return;
             Candidates[index] = false;
+            //todo
+            //context.History.AddSetValueEntry(digit, context, reason);
+
             _remainingCandidates--;
         }
 
-        public void SetValue(int digit, Context context)
+        public void SetValue(int digit, Context context, bool needsHistoryEntry, string reason = null)
         {
             ValidateDigit(digit);
             Candidates = Enumerable.Repeat(false, 9).ToList();
             _remainingCandidates = 0;
             Value = digit;
             OnValueSet(digit, context);
+            if (needsHistoryEntry)
+                context.History.AddSetValueEntry(digit, context, reason);
         }
 
         public bool TrySetValueByCandidates(Context context)
@@ -64,7 +69,7 @@ namespace Application.Models.SudokuAlgo
             if (!ReadyToBeSet)
                 return false;
             var digitToSet = Candidates.IndexOf(true) + 1;
-            SetValue(digitToSet, context);
+            SetValue(digitToSet, context, true);
             return true;
         }
 

@@ -1,6 +1,6 @@
 ﻿using Application.Models;
 
-namespace Application.MiscTodo.AlgoCandidatesSetters
+namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
 {
     public class BlockCandidateSetter : BaseCandidateSetter
     {
@@ -11,7 +11,7 @@ namespace Application.MiscTodo.AlgoCandidatesSetters
             {
                 if (cell.HasValue)
                     continue;
-                cell.RemoveCandidate(newDigit);
+                cell.RemoveCandidate(newDigit, context);
             }
         }
     }

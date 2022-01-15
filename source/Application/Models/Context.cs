@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using Application.Models.SudokuAlgo;
+using Application.Models.SudokuAlgo.History;
+using Application.Tools.Enums;
 
 namespace Application.Models
 {
@@ -13,6 +15,8 @@ namespace Application.Models
         public SolutionHistory History { get; }
 
         public Point CellUnderAction { get; set; }
+
+        public HistoryEntryLevel HistoryEntryLevel { get; set; }
 
         public Context()
         {

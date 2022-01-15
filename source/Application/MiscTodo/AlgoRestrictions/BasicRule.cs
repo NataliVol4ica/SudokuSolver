@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Application.Models.SudokuAlgo;
+using Application.Models.SudokuAlgo.History;
 
 namespace Application.MiscTodo.AlgoRestrictions
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Application.Models;
-using Application.Models.SudokuAlgo;
+using Application.Models.SudokuAlgo.History;
 
 namespace Application.MiscTodo.UserInput
 {
@@ -82,13 +82,11 @@ namespace Application.MiscTodo.UserInput
                 return;
             var stepText = entry.ToString();
             if (entry.IsLast)
-                stepText = "FINAL." + stepText;
+                Console.Write("FINAL.");
             else if (entry.IsFirst)
-                stepText = "FIRST. " + stepText;
-            Console.WriteLine(stepText);
-            SudokuPrinter.Print(entry.SudokuSnapshot, entry.Position);
+                Console.Write("FIRST.");
+            entry.Print();
             Console.WriteLine("\n");
-
         }
 
         private Command ReadInputKey()
