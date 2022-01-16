@@ -67,7 +67,7 @@ namespace ConsoleUserInterface
                 for (int i = 0; i < 3; i++)
                 {
                     var digit = consoleRowId * 3 + i;
-                    if (cell.Candidates[digit])
+                    if (cell.HasCandidate(digit))
                         PrintText($"{digit + 1}");
                     else if (valuePositionsViewEntries?.Any(e=>e.Value==digit + 1) ?? false)
                         PrintRemovedCandidate(digit+1);

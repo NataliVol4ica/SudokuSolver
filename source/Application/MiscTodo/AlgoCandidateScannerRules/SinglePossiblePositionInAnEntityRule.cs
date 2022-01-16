@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Application.MiscTodo.AlgoRestrictions.Models;
 using Application.Models;
 using Application.Models.SudokuAlgo;
+using Application.Tools.Enums;
 
 namespace Application.MiscTodo.AlgoCandidateScannerRules
 {
@@ -12,6 +12,7 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
         private int MaxDigits = 9;//todo 9
         protected int ApplyToSingle(SudokuCell[] setOfCells, Context context, string entityName, Func<int, Point> generatePosition)
         {
+            context.HistoryEntryLevel = HistoryEntryLevel.SolutionValueSet;
             var numOfChangedCells = 0;
             var statistics = InitializeStatistics(MaxDigits);
 
@@ -27,7 +28,7 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
                 //todo optimize: already know which digits are missing
                 for (int candidateId = 0; candidateId < 9; candidateId++) //todo 9
                 {
-                    if (cell.Candidates[candidateId] == false)
+                    if (cell.HasCandidate(candidateId) == false)
                         continue;
                     statistics[candidateId].NumOfOccurencies++;
                     statistics[candidateId].LatestPosition = generatePosition(entityId);

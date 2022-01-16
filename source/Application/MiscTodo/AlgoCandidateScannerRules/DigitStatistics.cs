@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Application.MiscTodo.AlgoRestrictions.Models
+namespace Application.MiscTodo.AlgoCandidateScannerRules
 {
     public class DigitStatistics
     {

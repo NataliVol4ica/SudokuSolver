@@ -25,6 +25,12 @@ namespace Application.Models
         }
         public bool IsSudokuSolved => _sudokuUnderSolution.IsSolved();
 
-        public Guid HistoryContextId { get; set; }
+        public Guid HistoryContextId { get; private set; }
+
+        public Guid InitNewContextId()
+        {
+            HistoryContextId = Guid.NewGuid();
+            return HistoryContextId;
+        }
     }
 }

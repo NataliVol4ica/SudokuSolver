@@ -87,6 +87,7 @@ namespace Application.Models.SudokuAlgo
         public SudokuCell[] Column(Point position) => _columns[position.Y];
         public SudokuCell[] Column(int columnId) => _columns[columnId];
         public SudokuCell[,] Block(Point position) => _blocks[position.X / 3 * 3 + position.Y / 3];
+        public SudokuCell[,] Block(int blockId) => _blocks[blockId];
         public SudokuCell[] PlainBlock(int blockId) => _plainBlocks[blockId];
 
         private static SudokuCell[] CreateRow(SudokuCell[,] cells, int positionX)

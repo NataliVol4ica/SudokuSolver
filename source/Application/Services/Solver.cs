@@ -1,7 +1,8 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using Application.MiscTodo.AlgoCandidateScannerRules;
+using Application.MiscTodo.AlgoNakedPairsRules;
 using Application.Models;
-using Application.Tools.Enums;
 
 namespace Application.Services
 {
@@ -9,10 +10,10 @@ namespace Application.Services
     {
         private readonly Context _context;
 
-        //todo
-        static Solver()
+        private readonly List<BaseNakedPairRule> _nakedPairRules = new()
         {
-        }
+            new NakedPairRule()
+        };
 
         public Solver(Context context)
         {
@@ -23,7 +24,6 @@ namespace Application.Services
         {
             bool isAnyCellUpdated;
 
-            _context.HistoryEntryLevel = HistoryEntryLevel.SolutionValueSet; //todo
             do
             {
                 isAnyCellUpdated = ApplyRules();
@@ -35,6 +35,7 @@ namespace Application.Services
             var numOfNewValueCells = 0;
             numOfNewValueCells += FillAllSingleCandidateCells();
             numOfNewValueCells += FillAllSinglePossiblePositionCells();
+            numOfNewValueCells += ApplyNakedPairRules();
             return numOfNewValueCells > 0;
         }
 
@@ -61,6 +62,18 @@ namespace Application.Services
             numOfNewValueCells += new SinglePossiblePositionInAColumnRule().ApplyToAll(_context);
             numOfNewValueCells += new SinglePossiblePositionInABlockRule().ApplyToAll(_context);
             return numOfNewValueCells;
+        }
+
+        private int ApplyNakedPairRules()
+        {
+            var numOfChanges = 0;
+
+            foreach (var rule in _nakedPairRules)
+            {
+                numOfChanges += rule.ApplyToAll(_context);
+            }
+            return numOfChanges;
+
         }
 
         //todo record history for each CELL SET action (done)  +add candidates removal to history with groupping (not done).
