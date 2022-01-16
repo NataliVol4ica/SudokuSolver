@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Application.Models.SudokuAlgo;
 using Application.Models.SudokuAlgo.History;
 using Application.Tools.Enums;
@@ -23,5 +24,7 @@ namespace Application.Models
             History = new SolutionHistory();
         }
         public bool IsSudokuSolved => _sudokuUnderSolution.IsSolved();
+
+        public Guid HistoryContextId { get; set; }
     }
 }

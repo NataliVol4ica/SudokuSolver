@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Application.MiscTodo.AlgoOnValueSetCandidatesSetters;
 
@@ -40,15 +41,15 @@ namespace Application.Models.SudokuAlgo
             _remainingCandidates = remainingCandidates;
         }
 
-        public void RemoveCandidate(int digit, Context context)
+        public void RemoveCandidate(int digit, Context context, Point position)
         {
             ValidateDigit(digit);
             var index = digit - 1;
             if (Candidates[index] == false)
                 return;
             Candidates[index] = false;
-            //todo
-            //context.History.AddSetValueEntry(digit, context, reason);
+
+            context.History.AddRemoveCandidateEntry(digit, context, position);
 
             _remainingCandidates--;
         }
@@ -61,6 +62,7 @@ namespace Application.Models.SudokuAlgo
             Candidates = Enumerable.Repeat(false, 9).ToList();
             _remainingCandidates = 0;
             Value = digit;
+            context.HistoryContextId = Guid.NewGuid();
             OnValueSet(digit, context);
             if (needsHistoryEntry)
                 context.History.AddSetValueEntry(digit, context, reason);

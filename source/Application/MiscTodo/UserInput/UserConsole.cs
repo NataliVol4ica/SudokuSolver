@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Application.Models;
 using Application.Models.SudokuAlgo.History;
+using Application.Models.SudokuAlgo.History.Viewer;
 
 namespace Application.MiscTodo.UserInput
 {
@@ -27,8 +29,10 @@ namespace Application.MiscTodo.UserInput
             Command command;
             
             Console.WriteLine($"Sudoku is fully solved? {solution.IsSudokuSolved}");
-            
-            var firstEntry = solution.History.GetNextEntry();
+
+            var historyViewer = SolutionHistoryViewer.Create(solution.History);
+
+            var firstEntry = historyViewer.GetNextEntry();
             if (firstEntry is null)
             {
                 Console.WriteLine("Failed to find even a single digit.");
@@ -45,22 +49,22 @@ namespace Application.MiscTodo.UserInput
                         PrintHelp();
                         break;
                     case Command.Next:
-                        PrintResult(solution.History.GetNextEntry());
+                        PrintResult(historyViewer.GetNextEntry());
                         break;
                     case Command.Previous:
-                        PrintResult(solution.History.GetPreviousEntry());
+                        PrintResult(historyViewer.GetPreviousEntry());
                         break;
                     case Command.First:
-                        PrintResult(solution.History.GetFirstEntry());
+                        PrintResult(historyViewer.GetFirstEntry());
                         break;
                     case Command.Last:
-                        PrintResult(solution.History.GetLastEntry());
+                        PrintResult(historyViewer.GetLastEntry());
                         break;
                     case Command.Decrease10:
-                        PrintResult(solution.History.JumpToEntry(-10));
+                        PrintResult(historyViewer.JumpToEntry(-10));
                         break;
                     case Command.Increase10:
-                        PrintResult(solution.History.JumpToEntry(10));
+                        PrintResult(historyViewer.JumpToEntry(10));
                         break;
                 }
             }
@@ -78,7 +82,7 @@ namespace Application.MiscTodo.UserInput
             Console.WriteLine("TODO :D");
         }
 
-        private void PrintResult(SolutionHistoryEntryForPrint entry)
+        private void PrintResult(SolutionHistoryViewEntry entry)
         {
             if (entry is null)
                 return;
@@ -90,32 +94,24 @@ namespace Application.MiscTodo.UserInput
             Console.WriteLine("\n");
         }
 
+        private readonly Dictionary<ConsoleKey, Command> _keyToCommands = new Dictionary<ConsoleKey, Command>
+        {
+            { ConsoleKey.Escape, Command.Exit },
+            { ConsoleKey.LeftArrow, Command.Previous },
+            { ConsoleKey.RightArrow, Command.Next },
+            { ConsoleKey.PageDown, Command.Last },
+            { ConsoleKey.PageUp, Command.First },
+            { ConsoleKey.UpArrow, Command.Decrease10 },
+            { ConsoleKey.DownArrow, Command.Increase10 },
+            { ConsoleKey.F1, Command.Help },
+        };
+
         private Command ReadInputKey()
         {
             var button = Console.ReadKey(false).Key;
-         
-            //todo: make a dictionary for help
-            switch (button)
-            {
-                case ConsoleKey.Escape:
-                    return Command.Exit;
-                case ConsoleKey.LeftArrow:
-                    return Command.Previous;
-                case ConsoleKey.RightArrow:
-                    return Command.Next;
-                case ConsoleKey.PageDown:
-                    return Command.Last;
-                case ConsoleKey.PageUp:
-                    return Command.First;
-                case ConsoleKey.UpArrow:
-                    return Command.Decrease10;
-                case ConsoleKey.DownArrow:
-                    return Command.Increase10;
-                case ConsoleKey.F1:
-                    return Command.Help;
-                default:
-                    return Command.None;
-            }
+            if (_keyToCommands.TryGetValue(button, out var result))
+                return result;
+            return Command.None;
         }
     }
 }

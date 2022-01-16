@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using System.Drawing;
+using Application.Models;
 
 namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
 {
@@ -7,11 +8,14 @@ namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
         public override void Perform(int newDigit, Context context)
         {
             var column = context.SudokuUnderSolution.Column(context.CellUnderAction);
-            foreach (var cell in column)
+            for (int columnId = 0; columnId < 9; columnId++) //todo 9
             {
+                var cell = column[columnId];
                 if (cell.HasValue)
                     continue;
-                cell.RemoveCandidate(newDigit, context);
+                cell.RemoveCandidate(newDigit,
+                    context,
+                    new Point(context.CellUnderAction.X, columnId));
             }
         }
     }

@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Application.Models.SudokuAlgo;
+using Application.Models.SudokuAlgo.History.Viewer;
 
 namespace Application.MiscTodo.UserInput
 {
     public static class ExtendedSudokuPrinter
     {
-        public static void Print(Sudoku sudoku, Point? changedCell = null)
+        public static void Print(Sudoku sudoku, List<ValuePositionsViewEntry> removedCandidates = null, Point? changedCell = null)
         {
             PrintHorizontalDigits();
             var cells = sudoku.DeepCopyCells();
@@ -20,7 +23,9 @@ namespace Application.MiscTodo.UserInput
                         PrintVerticalRowId(rowId, candidateRowId);
                         for (int columnId = 0; columnId < 9; columnId++)
                         {
-                            PrintSudokuCell(cells[rowId, columnId], candidateRowId, IsCellChanged(rowId, columnId, changedCell));
+                            var removedCandidatesInCell =
+                                removedCandidates?.Where(c => c.Position.X == rowId && c.Position.Y == columnId).ToList();
+                            PrintSudokuCell(cells[rowId, columnId], candidateRowId, IsCellChanged(rowId, columnId, changedCell), removedCandidatesInCell);
 
                             if (columnId != 8)
                             {
@@ -44,7 +49,7 @@ namespace Application.MiscTodo.UserInput
             PrintEndl();
         }
 
-        private static void PrintSudokuCell(SudokuCell cell, int consoleRowId, bool isChangedCell)
+        private static void PrintSudokuCell(SudokuCell cell, int consoleRowId, bool isChangedCell, List<ValuePositionsViewEntry> valuePositionsViewEntries)
         {
             if (cell.HasValue)
             {
@@ -64,11 +69,20 @@ namespace Application.MiscTodo.UserInput
                     var digit = consoleRowId * 3 + i;
                     if (cell.Candidates[digit])
                         PrintText($"{digit + 1}");
+                    else if (valuePositionsViewEntries?.Any(e=>e.Value==digit + 1) ?? false)
+                        PrintRemovedCandidate(digit+1);
                     else
                         PrintText(".");
                 }
                 SetDefaultColors();
             }
+        }
+
+        private static void PrintRemovedCandidate(int digit)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            PrintText(digit.ToString());
+            SetDefaultColors();
         }
 
         private static void PrintBlockHorizontalDelimiter()
