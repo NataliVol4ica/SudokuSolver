@@ -56,6 +56,8 @@ namespace Application.Models.SudokuAlgo
         public void SetValue(int digit, Context context, bool needsHistoryEntry, string reason = null)
         {
             ValidateDigit(digit);
+            if (Candidates[digit - 1] == false)
+                throw new Exception($"Cannot set cell value to {digit} because it is not a candidate in this cell");//todo custom exception
             Candidates = Enumerable.Repeat(false, 9).ToList();
             _remainingCandidates = 0;
             Value = digit;
