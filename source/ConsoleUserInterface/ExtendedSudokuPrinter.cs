@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Application.Models.SudokuAlgo;
-using Application.Models.SudokuAlgo.History.Viewer;
+using Application.Models.SudokuAlgo.History.SolutionHistoryNavigation;
 
-namespace Application.MiscTodo.UserInput
+namespace ConsoleUserInterface
 {
     public static class ExtendedSudokuPrinter
     {
-        public static void Print(Sudoku sudoku, List<ValuePositionsViewEntry> removedCandidates = null, Point? changedCell = null)
+        public static void Print(Sudoku sudoku, List<ValuePosition> removedCandidates = null, Point? changedCell = null)
         {
             PrintHorizontalDigits();
             var cells = sudoku.DeepCopyCells();
@@ -49,7 +49,7 @@ namespace Application.MiscTodo.UserInput
             PrintEndl();
         }
 
-        private static void PrintSudokuCell(SudokuCell cell, int consoleRowId, bool isChangedCell, List<ValuePositionsViewEntry> valuePositionsViewEntries)
+        private static void PrintSudokuCell(SudokuCell cell, int consoleRowId, bool isChangedCell, List<ValuePosition> valuePositionsViewEntries)
         {
             if (cell.HasValue)
             {
@@ -82,7 +82,7 @@ namespace Application.MiscTodo.UserInput
         {
             Console.ForegroundColor = ConsoleColor.Red;
             PrintText(digit.ToString());
-            SetDefaultColors();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
         }
 
         private static void PrintBlockHorizontalDelimiter()

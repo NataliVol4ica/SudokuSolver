@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Application.MiscTodo.AlgoCandidateScannerRules;
 using Application.Models;
+using Application.Tools.Enums;
 
 namespace Application.Services
 {
@@ -21,6 +22,8 @@ namespace Application.Services
         public void Solve()
         {
             bool isAnyCellUpdated;
+
+            _context.HistoryEntryLevel = HistoryEntryLevel.SolutionValueSet; //todo
             do
             {
                 isAnyCellUpdated = ApplyRules();

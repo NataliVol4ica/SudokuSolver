@@ -5,10 +5,9 @@ namespace Application.Models.SudokuAlgo.History
 {
     public class SolutionHistory
     {
-        public List<ValueSetSolutionHistoryEntry> SetValueEntries { get; } = new List<ValueSetSolutionHistoryEntry>(81);
+        public List<ValueSetSolutionHistoryEntry> SetValueEntries { get; } = new(81);
 
-        public List<CandidateRemovedSolutionHistoryEntry> RemoveCandidateEntries { get; } =
-            new List<CandidateRemovedSolutionHistoryEntry>();
+        public List<CandidateRemovedSolutionHistoryEntry> RemoveCandidateEntries { get; } = new();
 
         public void AddSetValueEntry(int digit, Context context, string reason)
         {
@@ -17,7 +16,8 @@ namespace Application.Models.SudokuAlgo.History
                 digit,
                 reason,
                 context.HistoryContextId,
-                context.SudokuUnderSolution));
+                context.SudokuUnderSolution,
+                context.HistoryEntryLevel));
         }
 
         public void AddRemoveCandidateEntry(int digit, Context context, Point position)
@@ -25,7 +25,8 @@ namespace Application.Models.SudokuAlgo.History
             RemoveCandidateEntries.Add(new CandidateRemovedSolutionHistoryEntry(
                 position,
                 digit,
-                context.HistoryContextId));
+                context.HistoryContextId,
+                context.HistoryEntryLevel));
         }
     }
 }

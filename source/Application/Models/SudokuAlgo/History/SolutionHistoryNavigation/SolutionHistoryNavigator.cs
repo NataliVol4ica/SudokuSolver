@@ -1,42 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Application.Tools.Enums;
 using MoreLinq;
 
-namespace Application.Models.SudokuAlgo.History.Viewer
+namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
 {
-    public class SolutionHistoryViewer
+    public class SolutionHistoryNavigator
     {
-        private readonly SolutionHistory _history;
 
-        private List<SolutionHistoryViewEntry> _viewEntries;
+        private List<SolutionHistoryNavigationEntry> _viewEntries;
 
         private int LastEntryId => _viewEntries.Count - 1;
         private int FirstEntryId => 0;
         private int PreviouslyViewedEntryId { get; set; } = -1;
 
-        private SolutionHistoryViewer(SolutionHistory history)
+        private SolutionHistoryNavigator()
         {
-            _history = history;
         }
 
-        public static SolutionHistoryViewer Create(SolutionHistory history)
+        public static SolutionHistoryNavigator Create(SolutionHistory history)
         {
-            var result = new SolutionHistoryViewer(history);
-            result.Initialize();
+            var result = new SolutionHistoryNavigator();
+            result.Initialize(history);
             return result;
         }
 
-        public void Initialize()
+        public void Initialize(SolutionHistory history)
         {
-            var candidateEntries = _history.RemoveCandidateEntries.GroupBy(e => e.ContextId);
+            var candidateEntries = history.RemoveCandidateEntries
+                .Where(e => e.Level != HistoryEntryLevel.SudokuInit)
+                .GroupBy(e => e.ContextId);
 
             _viewEntries =
-                _history.SetValueEntries.FullJoin(candidateEntries,
+                 history.SetValueEntries.Where(e=>e.Level != HistoryEntryLevel.SudokuInit)
+                     .FullJoin(candidateEntries,
                     valueSet => valueSet.ContextId,
                     candidateRm => candidateRm.Key,
-                    valueSet => new SolutionHistoryViewEntry(valueSet),
-                    candidateRm => new SolutionHistoryViewEntry(candidateRm.ToList()),
-                    (valueSet, candidateRm) => new SolutionHistoryViewEntry(valueSet, candidateRm.ToList()))
+                    valueSet => new SolutionHistoryNavigationEntry(valueSet),
+                    candidateRm => new SolutionHistoryNavigationEntry(candidateRm.ToList()),
+                    (valueSet, candidateRm) => new SolutionHistoryNavigationEntry(valueSet, candidateRm.ToList()))
                     .OrderBy(e=>e.TimeStamp) //todo verify if its needed
                     .ToList();
             _viewEntries[0].IsFirst = true;
@@ -47,7 +49,7 @@ namespace Application.Models.SudokuAlgo.History.Viewer
             }
         }
 
-        public SolutionHistoryViewEntry GetPreviousEntry()
+        public SolutionHistoryNavigationEntry GetPreviousEntry()
         {
             if (PreviouslyViewedEntryId <= FirstEntryId)
                 return null;
@@ -55,7 +57,7 @@ namespace Application.Models.SudokuAlgo.History.Viewer
             return entry;
         }
 
-        public SolutionHistoryViewEntry GetNextEntry()
+        public SolutionHistoryNavigationEntry GetNextEntry()
         {
             if (PreviouslyViewedEntryId >= LastEntryId)
                 return null;
@@ -63,19 +65,19 @@ namespace Application.Models.SudokuAlgo.History.Viewer
             return entry;
         }
 
-        public SolutionHistoryViewEntry GetFirstEntry()
+        public SolutionHistoryNavigationEntry GetFirstEntry()
         {
             PreviouslyViewedEntryId = FirstEntryId - 1;
             return GetNextEntry();
         }
 
-        public SolutionHistoryViewEntry GetLastEntry()
+        public SolutionHistoryNavigationEntry GetLastEntry()
         {
             PreviouslyViewedEntryId = LastEntryId + 1;
             return GetPreviousEntry();
         }
 
-        public SolutionHistoryViewEntry JumpToEntry(int delta)
+        public SolutionHistoryNavigationEntry JumpToEntry(int delta)
         {
             var targetId = PreviouslyViewedEntryId + delta;
             if (targetId < FirstEntryId)

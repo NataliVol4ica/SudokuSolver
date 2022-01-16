@@ -45,6 +45,7 @@ namespace Application.Models.SudokuAlgo
 
         public void Initialize(List<List<int>> source, Context context)
         {
+            context.HistoryEntryLevel = HistoryEntryLevel.SudokuInit;
             for (int i = 0; i < 9; i++) //todo 9
             {
                 for (int j = 0; j < 9; j++) //todo 9
@@ -53,7 +54,7 @@ namespace Application.Models.SudokuAlgo
                     {
                         context.CellUnderAction = new Point(i, j);
                         context.HistoryEntryLevel = HistoryEntryLevel.SudokuInit;
-                        _cells[i, j].SetValue(source[i][j], context, false);
+                        _cells[i, j].SetValue(source[i][j], context);
                     }
                 }
             }

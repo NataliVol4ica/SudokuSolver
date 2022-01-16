@@ -2,7 +2,7 @@
 using System.Drawing;
 using Application.Models.SudokuAlgo;
 
-namespace Application.MiscTodo.UserInput
+namespace ConsoleUserInterface
 {
     public static class BasicSudokuPrinter
     {

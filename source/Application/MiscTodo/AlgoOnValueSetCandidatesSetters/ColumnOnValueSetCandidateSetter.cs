@@ -8,14 +8,14 @@ namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
         public override void Perform(int newDigit, Context context)
         {
             var column = context.SudokuUnderSolution.Column(context.CellUnderAction);
-            for (int columnId = 0; columnId < 9; columnId++) //todo 9
+            for (int rowId = 0; rowId < 9; rowId++) //todo 9
             {
-                var cell = column[columnId];
+                var cell = column[rowId];
                 if (cell.HasValue)
                     continue;
                 cell.RemoveCandidate(newDigit,
                     context,
-                    new Point(context.CellUnderAction.X, columnId));
+                    new Point(rowId, context.CellUnderAction.Y));
             }
         }
     }

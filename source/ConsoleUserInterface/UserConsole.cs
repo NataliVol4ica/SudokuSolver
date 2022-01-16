@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.Models;
-using Application.Models.SudokuAlgo.History;
-using Application.Models.SudokuAlgo.History.Viewer;
+using Application.Models.SudokuAlgo.History.SolutionHistoryNavigation;
 
-namespace Application.MiscTodo.UserInput
+namespace ConsoleUserInterface
 {
     public class UserConsole
     {
@@ -30,7 +29,7 @@ namespace Application.MiscTodo.UserInput
             
             Console.WriteLine($"Sudoku is fully solved? {solution.IsSudokuSolved}");
 
-            var historyViewer = SolutionHistoryViewer.Create(solution.History);
+            var historyViewer = SolutionHistoryNavigator.Create(solution.History);
 
             var firstEntry = historyViewer.GetNextEntry();
             if (firstEntry is null)
@@ -82,16 +81,9 @@ namespace Application.MiscTodo.UserInput
             Console.WriteLine("TODO :D");
         }
 
-        private void PrintResult(SolutionHistoryViewEntry entry)
+        private void PrintResult(SolutionHistoryNavigationEntry entry)
         {
-            if (entry is null)
-                return;
-            if (entry.IsLast)
-                Console.Write("FINAL.");
-            else if (entry.IsFirst)
-                Console.Write("FIRST.");
             entry.Print(detailedMode);
-            Console.WriteLine("\n");
         }
 
         private readonly Dictionary<ConsoleKey, Command> _keyToCommands = new Dictionary<ConsoleKey, Command>

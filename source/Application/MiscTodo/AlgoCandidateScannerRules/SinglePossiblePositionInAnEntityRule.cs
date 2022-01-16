@@ -41,7 +41,7 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
                 {
                     //todo refactor. requite this data for value set
                     context.CellUnderAction = statistics[digit].LatestPosition;
-                    context.SudokuUnderSolution[statistics[digit].LatestPosition].SetValue(digit + 1, context, true, $"this is the only cell in a {entityName} that can have this value");
+                    context.SudokuUnderSolution[statistics[digit].LatestPosition].SetValue(digit + 1, context, $"this is the only cell in a {entityName} that can have this value");
                     numOfChangedCells++;
                 }
             }

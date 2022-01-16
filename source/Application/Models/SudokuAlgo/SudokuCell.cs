@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Application.MiscTodo.AlgoOnValueSetCandidatesSetters;
+using Application.Tools.Enums;
 
 namespace Application.Models.SudokuAlgo
 {
@@ -54,7 +55,7 @@ namespace Application.Models.SudokuAlgo
             _remainingCandidates--;
         }
 
-        public void SetValue(int digit, Context context, bool needsHistoryEntry, string reason = null)
+        public void SetValue(int digit, Context context, string reason = null)
         {
             ValidateDigit(digit);
             if (Candidates[digit - 1] == false)
@@ -64,8 +65,7 @@ namespace Application.Models.SudokuAlgo
             Value = digit;
             context.HistoryContextId = Guid.NewGuid();
             OnValueSet(digit, context);
-            if (needsHistoryEntry)
-                context.History.AddSetValueEntry(digit, context, reason);
+            context.History.AddSetValueEntry(digit, context, reason);
         }
 
         public bool TrySetValueByCandidates(Context context)
@@ -73,7 +73,7 @@ namespace Application.Models.SudokuAlgo
             if (!ReadyToBeSet)
                 return false;
             var digitToSet = Candidates.IndexOf(true) + 1;
-            SetValue(digitToSet, context, true, "there is no other digit that can be put in this cell");
+            SetValue(digitToSet, context, "there is no other digit that can be put in this cell");
             return true;
         }
 

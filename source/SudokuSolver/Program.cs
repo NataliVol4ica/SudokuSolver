@@ -1,8 +1,8 @@
 ﻿using System;
 using Application.MiscTodo.FileAccess;
-using Application.MiscTodo.UserInput;
 using Application.Models;
 using Application.Services;
+using ConsoleUserInterface;
 
 namespace SudokuSolver
 {
