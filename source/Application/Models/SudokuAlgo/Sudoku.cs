@@ -17,6 +17,7 @@ namespace Application.Models.SudokuAlgo
         private readonly List<SudokuCell[]> _rows;
         private readonly List<SudokuCell[]> _columns;
         private readonly List<SudokuCell[,]> _blocks;
+        private readonly List<SudokuCell[]> _plainBlocks;
 
         #region Constructors and Factories
         private Sudoku()
@@ -25,6 +26,7 @@ namespace Application.Models.SudokuAlgo
             _rows = Enumerable.Range(0, 9).Select(v => CreateRow(_cells, v)).ToList();
             _columns = Enumerable.Range(0, 9).Select(v => CreateColumn(_cells, v)).ToList();
             _blocks = Enumerable.Range(0, 9).Select(v => CreateBlock(_cells, v / 3, v % 3)).ToList();
+            _plainBlocks = Enumerable.Range(0, 9).Select(v => CreatePlainBlock(_cells, v / 3, v % 3)).ToList();
         }
 
         private SudokuCell[,] InitializeCells()
@@ -78,9 +80,13 @@ namespace Application.Models.SudokuAlgo
         
         #region Rows, Columns and Blocks
 
+        //todo protect ids
         public SudokuCell[] Row(Point position) => _rows[position.X];
+        public SudokuCell[] Row(int rowId) => _rows[rowId];
         public SudokuCell[] Column(Point position) => _columns[position.Y];
+        public SudokuCell[] Column(int columnId) => _columns[columnId];
         public SudokuCell[,] Block(Point position) => _blocks[position.X / 3 * 3 + position.Y / 3];
+        public SudokuCell[] PlainBlock(int blockId) => _plainBlocks[blockId];
 
         private static SudokuCell[] CreateRow(SudokuCell[,] cells, int positionX)
         {
@@ -96,13 +102,28 @@ namespace Application.Models.SudokuAlgo
         }
         private static SudokuCell[,] CreateBlock(SudokuCell[,] cells, int positionX, int positionY)
         {
-            var result = new SudokuCell[3, 3];
+            var result = new SudokuCell[3, 3]; //todo 9
             var start = new Point(positionX * 3, positionY * 3);
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
                     result[i, j] = cells[start.X + i, start.Y + j];
+                }
+            }
+
+            return result;
+        }
+
+        private static SudokuCell[] CreatePlainBlock(SudokuCell[,] cells, int positionX, int positionY)
+        {
+            var result = new SudokuCell[9]; //todo 9
+            var start = new Point(positionX * 3, positionY * 3);
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    result[i * 3 + j] = cells[start.X + i, start.Y + j];
                 }
             }
 

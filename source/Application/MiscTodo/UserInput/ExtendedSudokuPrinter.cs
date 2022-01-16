@@ -8,16 +8,16 @@ namespace Application.MiscTodo.UserInput
     {
         public static void Print(Sudoku sudoku, Point? changedCell = null)
         {
+            PrintHorizontalDigits();
             var cells = sudoku.DeepCopyCells();
             for (int blockRowId = 0; blockRowId < 3; blockRowId++)
             {
-                //single block row printer
                 for (int blockCellRowId = 0; blockCellRowId < 3; blockCellRowId++)
                 {
                     int rowId = blockRowId * 3 + blockCellRowId;
-                    //print 9 cells in form of 3 rows
                     for (int candidateRowId = 0; candidateRowId < 3; candidateRowId++)
                     {
+                        PrintVerticalRowId(rowId, candidateRowId);
                         for (int columnId = 0; columnId < 9; columnId++)
                         {
                             PrintSudokuCell(cells[rowId, columnId], candidateRowId, IsCellChanged(rowId, columnId, changedCell));
@@ -30,6 +30,7 @@ namespace Application.MiscTodo.UserInput
                                     PrintCellVerticalDelimiter();
                             }
                         }
+                        PrintVerticalRowId(rowId, candidateRowId);
                         PrintEndl();
                     }
                     if (blockCellRowId != 2)
@@ -39,10 +40,7 @@ namespace Application.MiscTodo.UserInput
                 if (blockRowId != 2)
                     PrintBlockHorizontalDelimiter();
             }
-
-            //PrintHorizontalDigits();
-
-            //PrintHorizontalDigits();
+            PrintHorizontalDigits();
             PrintEndl();
         }
 
@@ -75,14 +73,17 @@ namespace Application.MiscTodo.UserInput
 
         private static void PrintBlockHorizontalDelimiter()
         {
+            PrintVerticalBorderInARow("===");
             Console.BackgroundColor = ConsoleColor.DarkGray;
             PrintText("===========++===========++===========");
             SetDefaultColors();
+            PrintVerticalBorderInARow("===");
             PrintEndl();
         }
 
         private static void PrintCellHorizontalDelimiter()
         {
+            PrintVerticalBorderInARow("---");
             PrintText("---+---+---");
             Console.BackgroundColor = ConsoleColor.DarkGray;
             PrintText("++");
@@ -92,6 +93,7 @@ namespace Application.MiscTodo.UserInput
             PrintText("++");
             SetDefaultColors();
             PrintText("---+---+---");
+            PrintVerticalBorderInARow("---");
             PrintEndl();
         }
 
@@ -106,27 +108,6 @@ namespace Application.MiscTodo.UserInput
             PrintText("|");
         }
 
-        private static void PrintCellBorder()
-        {
-            PrintBorder("   ");
-            PrintText(" ------+-------+------");
-            PrintBorder("   ");
-            PrintEndl();
-        }
-
-        private static void PrintHorizontalDigits()
-        {
-
-            PrintBorder("    ");
-            for (int i = 0; i < 9; i++) //todo 9
-            {
-                PrintBorder($"{i + 1} ");
-                if (i != 0 && i % 3 == 2)
-                    PrintBorder("  ");
-            }
-
-            PrintText( "\n");
-        }
 
         private static bool IsCellChanged(int x, int y, Point? changedCell)
         {
@@ -175,5 +156,44 @@ namespace Application.MiscTodo.UserInput
         {
             Console.Write(text);
         }
+
+        #region Print A..I1..9 borders
+
+        private static void PrintHorizontalDigits()
+        {
+            PrintBorder("   ");
+            for (int i = 0; i < 9; i++) //todo 9
+            {
+                PrintBorder($" {i + 1}  ");
+                if (i != 0 && i % 3 == 2)
+                    PrintBorder(" ");
+            }
+
+            PrintBorder(" ");
+            PrintEndl();
+        }
+
+        private static void PrintVerticalRowId(int digit, int rowId)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            if (rowId == 0 || rowId == 2)
+                PrintVerticalBorderInARow();
+            else if (rowId == 1)
+                PrintBorder($" {(char)('A' + digit)} ");
+
+            SetDefaultColors();
+        }
+
+        private static void PrintVerticalBorderInARow(string text = null)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            if (!String.IsNullOrEmpty(text))
+                PrintBorder(text);
+            else
+                PrintBorder("   ");
+            SetDefaultColors();
+        }
+
+        #endregion Print A..I1..9 borders
     }
 }

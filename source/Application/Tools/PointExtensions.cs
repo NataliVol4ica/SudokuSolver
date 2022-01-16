@@ -7,7 +7,7 @@ namespace Application.Tools
         public static string ToSudokuCoords(this Point source)
         {
             char rowLetter = (char)(source.X + 'A');
-            return $"[{rowLetter}{source.Y}]";
+            return $"[{rowLetter}{source.Y + 1}]";
         }
     }
 }

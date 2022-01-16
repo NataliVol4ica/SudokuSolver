@@ -1,24 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using Application.MiscTodo.AlgoRestrictions;
+﻿using System.Drawing;
+using Application.MiscTodo.AlgoCandidateScannerRules;
 using Application.Models;
 
 namespace Application.Services
 {
     public class Solver
     {
-        private static readonly List<BasicRule> _basicRules;
         private readonly Context _context;
 
         //todo
         static Solver()
         {
-            _basicRules = new List<BasicRule>
-            {
-                //todo
-                //new SinglePossiblePositionInARowRule(),
-                //new SinglePossiblePositionInAColumnRule(),
-            };
         }
 
         public Solver(Context context)
@@ -28,32 +20,44 @@ namespace Application.Services
 
         public void Solve()
         {
-            FillAllSingleCandidateCells();
-        }
-
-        private void FillAllSingleCandidateCells()
-        {
             bool isAnyCellUpdated;
             do
             {
-                isAnyCellUpdated = FillFirstFoundSingleCandidateCells();
+                isAnyCellUpdated = ApplyRules();
             } while (isAnyCellUpdated);
         }
 
-        private bool FillFirstFoundSingleCandidateCells()
+        private bool ApplyRules()
         {
+            var numOfNewValueCells = 0;
+            numOfNewValueCells += FillAllSingleCandidateCells();
+            numOfNewValueCells += FillAllSinglePossiblePositionCells();
+            return numOfNewValueCells > 0;
+        }
+
+        private int FillAllSingleCandidateCells()
+        {
+            var numOfNewValueCells = 0;
             for (int i = 0; i < 9; i++) //todo 9
             {
                 for (int j = 0; j < 9; j++) //todo 9
                 {
                     _context.CellUnderAction = new Point(i, j);
-                    //if candidate has been found - start from the very beginning? //todo decide. If no - rename method.
                     if (_context.SudokuUnderSolution[i, j].TrySetValueByCandidates(_context))
-                        return true;
+                        numOfNewValueCells++;
                 }
             }
 
-            return false;
+            return numOfNewValueCells;
+        }
+
+        private int FillAllSinglePossiblePositionCells()
+        {
+            var numOfNewValueCells = 0;
+            numOfNewValueCells += new SinglePossiblePositionInARowRule().ApplyToAll(_context);
+            numOfNewValueCells += new SinglePossiblePositionInAColumnRule().ApplyToAll(_context);
+            numOfNewValueCells += new SinglePossiblePositionInABlockRule().ApplyToAll(_context);
+            return numOfNewValueCells;
         }
 
         //record history for each CELL SET action. add candidates removal to history.

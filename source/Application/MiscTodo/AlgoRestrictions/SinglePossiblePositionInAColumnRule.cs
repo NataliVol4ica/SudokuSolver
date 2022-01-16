@@ -2,6 +2,7 @@
 //using System.Drawing;
 //using Application.MiscTodo.AlgoRestrictions.Models;
 //using Application.Models.SudokuAlgo;
+//using Application.Models.SudokuAlgo.History;
 
 //namespace Application.MiscTodo.AlgoRestrictions
 //{
@@ -15,7 +16,7 @@
 //            var statistics = new List<DigitStatistics>(9); //todo 9
 //            for (int i = 0; i < 9; i++)
 //                statistics.Add(new DigitStatistics());
-            
+
 //            //for each digit, count the number of occurencies in a row
 //            for (int i = 0; i < column.Length; i++)
 //            {

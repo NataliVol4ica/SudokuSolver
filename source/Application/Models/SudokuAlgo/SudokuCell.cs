@@ -10,9 +10,9 @@ namespace Application.Models.SudokuAlgo
     {
         static SudokuCell()
         {
-            OnValueSet+= new RowCandidateSetter().Perform;
-            OnValueSet+= new ColumnCandidateSetter().Perform;
-            OnValueSet+= new BlockCandidateSetter().Perform;
+            OnValueSet+= new RowOnValueSetCandidateSetter().Perform;
+            OnValueSet+= new ColumnOnValueSetCandidateSetter().Perform;
+            OnValueSet+= new BlockOnValueSetCandidateSetter().Perform;
         }
 
         private const int MaxDigits = 9;

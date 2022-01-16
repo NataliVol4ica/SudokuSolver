@@ -2,7 +2,7 @@
 
 namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
 {
-    public class BlockCandidateSetter : BaseCandidateSetter
+    public class BlockOnValueSetCandidateSetter : BaseOnValueSetCandidateSetter
     {
         public override void Perform(int newDigit, Context context)
         {

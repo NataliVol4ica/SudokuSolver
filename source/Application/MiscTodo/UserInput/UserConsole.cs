@@ -26,7 +26,7 @@ namespace Application.MiscTodo.UserInput
             //todo split into smaller methods
             Command command;
             
-            Console.WriteLine($"Sudoku is fully solved? {solution.SudokuUnderSolution.IsSolved()}");
+            Console.WriteLine($"Sudoku is fully solved? {solution.IsSudokuSolved}");
             
             var firstEntry = solution.History.GetNextEntry();
             if (firstEntry is null)

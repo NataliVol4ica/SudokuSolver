@@ -2,7 +2,7 @@
 
 namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
 {
-    public abstract class BaseCandidateSetter
+    public abstract class BaseOnValueSetCandidateSetter
     {
         public abstract void Perform(int newDigit, Context context);
     }

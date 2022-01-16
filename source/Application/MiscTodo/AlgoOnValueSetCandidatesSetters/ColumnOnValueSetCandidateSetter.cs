@@ -2,12 +2,12 @@
 
 namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
 {
-    public class RowCandidateSetter : BaseCandidateSetter
+    public class ColumnOnValueSetCandidateSetter : BaseOnValueSetCandidateSetter
     {
         public override void Perform(int newDigit, Context context)
         {
-            var row = context.SudokuUnderSolution.Row(context.CellUnderAction);
-            foreach (var cell in row)
+            var column = context.SudokuUnderSolution.Column(context.CellUnderAction);
+            foreach (var cell in column)
             {
                 if (cell.HasValue)
                     continue;
