@@ -1,6 +1,8 @@
 # SudokuSolver
 An app that is trying to solve a given sudoku in a human-understandable way.
 
+**NO BRUTE FORCE.**
+
 Project development can stop at any of these milestones:
 
 1. console app can read sudoku from file and print console solution with solution steps on demand
