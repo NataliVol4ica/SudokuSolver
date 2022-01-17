@@ -1,6 +1,5 @@
 ﻿using System;
 using Application.Models.SudokuAlgo.History.SolutionHistoryNavigation;
-using Application.Tools;
 
 namespace ConsoleUserInterface
 {
@@ -10,22 +9,19 @@ namespace ConsoleUserInterface
         {
             if (entry is null)
                 return;
-            if (entry.CellValueSet != null)
+            if (!string.IsNullOrEmpty(entry.Message))
             {
-                if (entry.IsFirst)
-                    Console.Write("FIRST. ");
-                else if (entry.IsLast)
-                    Console.Write("LAST. ");
-                Console.WriteLine($"Step {entry.StepId}. A digit '{entry.CellValueSet.Value}' has been placed at {entry.CellValueSet.Position.ToSudokuCoords()} because {entry.Message}. " +
-                                  $"It has triggered {entry.CandidateValueRemoved?.Count ?? 0} candidates removal");
-                if (entry.SudokuSnapshot != null)
+                Console.WriteLine(entry.Message);
+            }
+
+            if (entry.SudokuSnapshot != null)
+            {
+                if (isDetailed)
+                    ExtendedSudokuPrinter.Print(entry.SudokuSnapshot, entry.CandidateValueRemoved,
+                        entry.CellValueSet?.Position);
+                else
                 {
-                    if (isDetailed)
-                        ExtendedSudokuPrinter.Print(entry.SudokuSnapshot, entry.CandidateValueRemoved, entry.CellValueSet.Position);
-                    else
-                    {
-                        BasicSudokuPrinter.Print(entry.SudokuSnapshot, entry.CellValueSet.Position);
-                    }
+                    BasicSudokuPrinter.Print(entry.SudokuSnapshot, entry.CellValueSet?.Position);
                 }
             }
             //TODO handle other cases print

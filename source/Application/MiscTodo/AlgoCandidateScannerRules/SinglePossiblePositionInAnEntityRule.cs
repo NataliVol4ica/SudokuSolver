@@ -32,6 +32,8 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
                         continue;
                     statistics[candidateId].NumOfOccurencies++;
                     statistics[candidateId].LatestPosition = generatePosition(entityId);
+                
+                
                 }
             }
 

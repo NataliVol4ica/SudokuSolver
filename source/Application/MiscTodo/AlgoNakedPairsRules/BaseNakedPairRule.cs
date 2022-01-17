@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Application.Models;
+using Application.Tools;
 
 namespace Application.MiscTodo.AlgoNakedPairsRules
 {
@@ -40,7 +41,7 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
                     continue;
                 foreach (var candidate in candidates)
                 {
-                    if (row[colId].RemoveCandidate(candidate, context, currentAbsolutePos))
+                    if (row[colId].RemoveCandidate(candidate + 1, context, currentAbsolutePos, Message(candidates, firstAbsolutePoint, secondAbsolutePoint)))
                         numOfChanges++;
                 }
             }
@@ -62,7 +63,7 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
                     continue;
                 foreach (var candidate in candidates)
                 {
-                    if (column[rowId].RemoveCandidate(candidate, context, currentAbsolutePos))
+                    if (column[rowId].RemoveCandidate(candidate + 1, context, currentAbsolutePos, Message(candidates, firstAbsolutePoint, secondAbsolutePoint)))
                         numOfChanges++;
                 }
             }
@@ -75,7 +76,7 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
             var numOfChanges = 0;
 
             var block = context.SudokuUnderSolution.Block(firstAbsolutePoint);
-            var blockStartPos = new Point(firstAbsolutePoint.X / 3, firstAbsolutePoint.Y / 3);
+            var blockStartPos = new Point(firstAbsolutePoint.X / 3 * 3, firstAbsolutePoint.Y / 3 * 3);
             for (int blockI = 0; blockI < 3; blockI++) //todo 9
             {
                 for (int blockJ = 0; blockJ < 3; blockJ++) //todo 9
@@ -87,7 +88,7 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
                         continue;
                     foreach (var candidate in candidates)
                     {
-                        if (block[blockI, blockJ].RemoveCandidate(candidate, context, currentAbsolutePos))
+                        if (block[blockI, blockJ].RemoveCandidate(candidate + 1, context, currentAbsolutePos, Message(candidates, firstAbsolutePoint, secondAbsolutePoint)))
                             numOfChanges++;
                     }
                 }
@@ -110,5 +111,9 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
         {
             return p1.X / 3 == p2.X / 3 && p1.Y / 3 == p2.Y / 3;
         }
+
+        private string Message(List<int> candidates, Point firstAbsolutePoint, Point secondAbsolutePoint) =>
+            $"Found naked pair ({candidates[0] + 1},{candidates[1] + 1}) at {firstAbsolutePoint.ToSudokuCoords()} " +
+            $"and {secondAbsolutePoint.ToSudokuCoords()}. Removing other candidates in block, row and column";
     }
 }

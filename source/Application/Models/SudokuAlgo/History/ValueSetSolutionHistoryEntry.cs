@@ -11,7 +11,7 @@ namespace Application.Models.SudokuAlgo.History
         public string Reason { get; protected set; }
         public Sudoku SudokuSnapshot { get; protected set; }
 
-        public ValueSetSolutionHistoryEntry(Point pos, int digit, string reason, Guid contextId, Sudoku snapshot, HistoryEntryLevel level)
+        public ValueSetSolutionHistoryEntry(Point pos, int digit, string reason, Sudoku snapshot, Guid contextId, HistoryEntryLevel level)
         {
             Digit = digit;
             Position = pos;

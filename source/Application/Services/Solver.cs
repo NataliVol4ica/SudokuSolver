@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Application.MiscTodo.AlgoCandidateScannerRules;
 using Application.MiscTodo.AlgoNakedPairsRules;
@@ -20,7 +21,7 @@ namespace Application.Services
             _context = context;
         }
 
-        public void Solve()
+        public void SafeSolve()
         {
             bool isAnyCellUpdated;
 
@@ -28,6 +29,24 @@ namespace Application.Services
             {
                 isAnyCellUpdated = ApplyRules();
             } while (isAnyCellUpdated);
+
+        }
+
+        public void Solve()
+        {
+            try
+            {
+                bool isAnyCellUpdated;
+
+                do
+                {
+                    isAnyCellUpdated = ApplyRules();
+                } while (isAnyCellUpdated);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Program has crashed. {ex.Message}");
+            }
         }
 
         private bool ApplyRules()

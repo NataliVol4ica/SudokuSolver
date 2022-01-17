@@ -11,11 +11,12 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
             for (int blockId = 0; blockId < 9; blockId++) //todo 9
             {
                 var blockIdForFunc = blockId;
+                var setOfCells = context.SudokuUnderSolution.PlainBlock(blockId);
                 numOfNewValueCells += ApplyToSingle(
-                    context.SudokuUnderSolution.PlainBlock(blockId),
+                    setOfCells,
                     context, 
                     "BLOCK",
-                    (entityId) => new Point(blockIdForFunc / 3 + entityId / 3, blockIdForFunc % 3 + entityId % 3));
+                    (entityId) => new Point(blockIdForFunc / 3 * 3 + entityId / 3, blockIdForFunc % 3 * 3 + entityId % 3));
             }
 
             return numOfNewValueCells;

@@ -15,18 +15,20 @@ namespace Application.Models.SudokuAlgo.History
                 context.CellUnderAction,
                 digit,
                 reason,
-                context.HistoryContextId,
                 context.SudokuUnderSolution,
+                context.HistoryContextId,
                 context.HistoryEntryLevel));
         }
 
-        public void AddRemoveCandidateEntry(int digit, Context context, Point position)
+        public void AddRemoveCandidateEntry(int digit, Context context, Point position, string message)
         {
             RemoveCandidateEntries.Add(new CandidateRemovedSolutionHistoryEntry(
                 position,
                 digit,
+                context.SudokuUnderSolution,
                 context.HistoryContextId,
-                context.HistoryEntryLevel));
+                context.HistoryEntryLevel,
+                message));
         }
     }
 }

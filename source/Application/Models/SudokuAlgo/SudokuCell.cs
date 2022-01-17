@@ -43,7 +43,7 @@ namespace Application.Models.SudokuAlgo
             _numOfRemainingCandidates = numOfRemainingCandidates;
         }
 
-        public bool RemoveCandidate(int digit, Context context, Point position)
+        public bool RemoveCandidate(int digit, Context context, Point position, string message = null)
         {
             ValidateDigit(digit);
             var index = digit - 1;
@@ -51,7 +51,7 @@ namespace Application.Models.SudokuAlgo
                 return false;
             _candidates[index] = false;
 
-            context.History.AddRemoveCandidateEntry(digit, context, position);
+            context.History.AddRemoveCandidateEntry(digit, context, position, message);
 
             _numOfRemainingCandidates--;
             return true;
@@ -60,8 +60,10 @@ namespace Application.Models.SudokuAlgo
         public void SetValue(int digit, Context context, string reason = null)
         {
             ValidateDigit(digit);
+            if (HasValue)
+                throw new Exception($"Cannot set cell value to {digit} because it already has a value {Value}"); //todo custom exception
             if (_candidates[digit - 1] == false)
-                throw new Exception($"Cannot set cell value to {digit} because it is not a candidate in this cell");//todo custom exception
+                throw new Exception($"Cannot set cell value to {digit} because it is not a candidate in this cell"); //todo custom exception
             _candidates = Enumerable.Repeat(false, 9).ToList();
             _numOfRemainingCandidates = 0;
             Value = digit;

@@ -38,7 +38,7 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
             return numOfChanges;
         }
 
-        public int ApplyToAll(Context context)
+        public override int ApplyToAll(Context context)
         {
             context.HistoryEntryLevel = HistoryEntryLevel.CandidateSet;
 
