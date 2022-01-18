@@ -16,11 +16,11 @@ namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
 
         private string ProcessStepId(int stepId)
         {
-            string result = $"Step {stepId}.";
+            string result = $"Step {stepId + 1}.";
             if (IsFirst)
                 return "FIRST. " + result;
             if (IsLast)
-                return "LAST. " + result;
+                return "FINAL. " + result;
             return result;
         }
 

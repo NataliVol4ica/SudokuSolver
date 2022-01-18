@@ -13,7 +13,9 @@ namespace Application.Services
 
         private readonly List<BaseNakedPairRule> _nakedPairRules = new()
         {
-            new NakedPairRule()
+            new RowNakedPairRule(),
+            new ColumnNakedPairRule(),
+            new BlockNakedPairRule(),
         };
 
         public Solver(Context context)

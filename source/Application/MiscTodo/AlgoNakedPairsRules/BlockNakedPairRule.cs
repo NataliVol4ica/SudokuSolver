@@ -5,7 +5,7 @@ using Application.Tools.Enums;
 
 namespace Application.MiscTodo.AlgoNakedPairsRules
 {
-    public class NakedPairRule : BaseNakedPairRule
+    public class BlockNakedPairRule : BaseNakedPairRule
     {
         private int ApplyToBlock(int blockId, Context context)
         {
