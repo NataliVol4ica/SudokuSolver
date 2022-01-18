@@ -3,9 +3,9 @@ using Application.Models;
 
 namespace Application.MiscTodo.AlgoCandidateScannerRules
 {
-    public class SinglePossiblePositionInABlockRule : SinglePossiblePositionInAnEntityRule
+    public class SinglePossiblePositionInABlockRule : BaseSinglePossiblePositionRule
     {
-        public int ApplyToAll(Context context)
+        public override int ApplyToAll(Context context)
         {
             var numOfNewValueCells = 0;
             for (int blockId = 0; blockId < 9; blockId++) //todo 9

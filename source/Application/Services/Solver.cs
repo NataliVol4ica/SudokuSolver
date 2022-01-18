@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Application.MiscTodo.AlgoCandidateScannerRules;
+using Application.MiscTodo.AlgoHiddenPairsRules;
 using Application.MiscTodo.AlgoNakedPairsRules;
 using Application.Models;
 
@@ -11,11 +12,26 @@ namespace Application.Services
     {
         private readonly Context _context;
 
+        private readonly List<BaseSinglePossiblePositionRule> _singlePossiblePositionRules = new()
+        {
+            new SinglePossiblePositionInARowRule(),
+            new SinglePossiblePositionInAColumnRule(),
+            new SinglePossiblePositionInABlockRule(),
+        };
+
+
         private readonly List<BaseNakedPairRule> _nakedPairRules = new()
         {
+            //todo check repetitive code
             new RowNakedPairRule(),
             new ColumnNakedPairRule(),
             new BlockNakedPairRule(),
+        };
+
+        private readonly List<BaseHiddenPairRule> _hiddenPairRules = new()
+        {
+            //todo check repetitive code
+            new HiddenPairRule(),
         };
 
         public Solver(Context context)
@@ -57,6 +73,7 @@ namespace Application.Services
             numOfNewValueCells += FillAllSingleCandidateCells();
             numOfNewValueCells += FillAllSinglePossiblePositionCells();
             numOfNewValueCells += ApplyNakedPairRules();
+            numOfNewValueCells += ApplyHiddenPairRules();
             return numOfNewValueCells > 0;
         }
 
@@ -78,11 +95,14 @@ namespace Application.Services
 
         private int FillAllSinglePossiblePositionCells()
         {
-            var numOfNewValueCells = 0;
-            numOfNewValueCells += new SinglePossiblePositionInARowRule().ApplyToAll(_context);
-            numOfNewValueCells += new SinglePossiblePositionInAColumnRule().ApplyToAll(_context);
-            numOfNewValueCells += new SinglePossiblePositionInABlockRule().ApplyToAll(_context);
-            return numOfNewValueCells;
+            var numOfChanges = 0;
+
+            foreach (var rule in _singlePossiblePositionRules)
+            {
+                numOfChanges += rule.ApplyToAll(_context);
+            }
+
+            return numOfChanges;
         }
 
         private int ApplyNakedPairRules()
@@ -90,6 +110,18 @@ namespace Application.Services
             var numOfChanges = 0;
 
             foreach (var rule in _nakedPairRules)
+            {
+                numOfChanges += rule.ApplyToAll(_context);
+            }
+
+            return numOfChanges;
+        }
+
+        private int ApplyHiddenPairRules()
+        {
+            var numOfChanges = 0;
+
+            foreach (var rule in _hiddenPairRules)
             {
                 numOfChanges += rule.ApplyToAll(_context);
             }

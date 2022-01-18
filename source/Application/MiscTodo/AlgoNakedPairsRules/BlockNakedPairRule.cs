@@ -29,8 +29,8 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
                         continue;
                     //reaching this point means that we have found a naked pair
                     context.InitNewContextId();
-                    var firstCellAbsolutePosition = new Point(blockId / 3 * 3 + i / 3, (blockId % 3 * 3) + i % 3);
-                    var secondCellAbsolutePosition = new Point(blockId / 3 * 3 + j / 3, (blockId % 3 * 3) + j % 3);
+                    var firstCellAbsolutePosition = new Point(blockId / 3 * 3 + i / 3, blockId % 3 * 3 + i % 3);
+                    var secondCellAbsolutePosition = new Point(blockId / 3 * 3 + j / 3, blockId % 3 * 3 + j % 3);
                     ProcessPair(firstCellCandidates, firstCellAbsolutePosition, secondCellAbsolutePosition, context);
                 }
             }
