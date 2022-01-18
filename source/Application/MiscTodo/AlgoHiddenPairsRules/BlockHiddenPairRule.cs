@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using Application.Models;
 using Application.Tools.Enums;
 
 namespace Application.MiscTodo.AlgoHiddenPairsRules
 {
-    public class HiddenPairRule : BaseHiddenPairRule
+    public class BlockHiddenPairRule : BaseHiddenPairRule
     {
         private int ApplyToBlock(int blockId, Context context)
         {
@@ -33,39 +31,9 @@ namespace Application.MiscTodo.AlgoHiddenPairsRules
                 }
             }
 
-            for (int digit1 = 0; digit1 < 9; digit1++) //todo 9
-            {
-                if (statistics[digit1].NumOfOccurencies != 2)
-                    continue;
-                for (int digit2 = digit1 + 1; digit2 < 9; digit2++)
-                {
-                    if (statistics[digit1].NumOfOccurencies != 2)
-                        continue;
-                    if (!statistics[digit1].Positions.SequenceEqual(statistics[digit2].Positions))
-                        continue;
-                    if (context.SudokuUnderSolution[statistics[digit1].Positions[0]].NumOfRemainingCandidates == 2 &&
-                        context.SudokuUnderSolution[statistics[digit1].Positions[1]].NumOfRemainingCandidates == 2)
-                        continue;//we dont want to process hidden pairs as naked pairs
-                    //reaching this point means that we have found a hidden pair
-                    context.InitNewContextId();
-                    ProcessPair(new List<int> { digit1, digit2 },
-                        statistics[digit1].Positions[0],
-                        statistics[digit1].Positions[1],
-                        context
-                    );
-                }
-            }
+            numOfChanges += ProcessStatistics(statistics, context);
 
             return numOfChanges;
-        }
-        
-
-        private List<DigitStatistics> InitializeStatistics(int size)
-        {
-            var statistics = new List<DigitStatistics>(size);
-            for (int i = 0; i < size; i++)
-                statistics.Add(new DigitStatistics());
-            return statistics;
         }
 
         public override int ApplyToAll(Context context)

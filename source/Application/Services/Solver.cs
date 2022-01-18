@@ -31,7 +31,9 @@ namespace Application.Services
         private readonly List<BaseHiddenPairRule> _hiddenPairRules = new()
         {
             //todo check repetitive code
-            new HiddenPairRule(),
+            new BlockHiddenPairRule(),
+            new RowHiddenPairRule(),
+            new ColumnHiddenPairRule(),
         };
 
         public Solver(Context context)
