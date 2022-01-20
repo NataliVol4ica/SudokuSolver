@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
-using Application.MiscTodo.AlgoCandidateScannerRules;
 using Application.Models;
 
-namespace Application.MiscTodo.AlgoNakedSinglesRules
+namespace Application.MiscTodo.AlgoHiddenSinglesRules
 {
     public class HiddenSingleInABlockRule : BaseHiddenSingleRule
     {

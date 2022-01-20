@@ -5,7 +5,7 @@ using Application.Models;
 using Application.Models.SudokuAlgo;
 using Application.Tools.Enums;
 
-namespace Application.MiscTodo.AlgoCandidateScannerRules
+namespace Application.MiscTodo.AlgoHiddenSinglesRules
 {
     public abstract class BaseHiddenSingleRule
     {
@@ -32,8 +32,6 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
                         continue;
                     statistics[candidateId].NumOfOccurencies++;
                     statistics[candidateId].LatestPosition = generatePosition(entityId);
-
-
                 }
             }
 

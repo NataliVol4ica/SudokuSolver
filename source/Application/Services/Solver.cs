@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.MiscTodo;
-using Application.MiscTodo.AlgoFullHouseRules;
 using Application.MiscTodo.AlgoHiddenPairsRules;
+using Application.MiscTodo.AlgoHiddenSinglesRules;
 using Application.MiscTodo.AlgoNakedPairsRules;
-using Application.MiscTodo.AlgoNakedSinglesRules;
+using Application.MiscTodo.AlgoNakedSingleRules;
+using Application.MiscTodo.AlgoXWingRules;
 using Application.Models;
 
 namespace Application.Services
@@ -19,6 +20,7 @@ namespace Application.Services
             new HiddenSinglesRule(),
             new NakedPairsRule(),
             new HiddenPairsRule(),
+            new XWingRule(),
         };
 
         public Solver(Context context)

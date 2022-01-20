@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Application.Models;
 
-namespace Application.MiscTodo.AlgoCandidateScannerRules
+namespace Application.MiscTodo.AlgoHiddenSinglesRules
 {
     public class HiddenSingleInAColumnRule : BaseHiddenSingleRule
     {

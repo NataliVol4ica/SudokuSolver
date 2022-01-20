@@ -71,9 +71,6 @@ namespace Application.MiscTodo.AlgoHiddenPairsRules
             return numOfChanges;
         }
 
-        private string Message(List<int> candidates, Point firstAbsolutePoint, Point secondAbsolutePoint) =>
-            $"Found hidden pair ({candidates[0] + 1},{candidates[1] + 1}) at {firstAbsolutePoint.ToSudokuCoords()} " +
-            $"and {secondAbsolutePoint.ToSudokuCoords()}. Removing other candidates in block, row and column";
         protected List<DigitStatistics> InitializeStatistics(int size)
         {
             var statistics = new List<DigitStatistics>(size);
@@ -81,5 +78,9 @@ namespace Application.MiscTodo.AlgoHiddenPairsRules
                 statistics.Add(new DigitStatistics());
             return statistics;
         }
+
+        private string Message(List<int> candidates, Point firstAbsolutePoint, Point secondAbsolutePoint) =>
+            $"Found hidden pair ({candidates[0] + 1},{candidates[1] + 1}) at {firstAbsolutePoint.ToSudokuCoords()} " +
+            $"and {secondAbsolutePoint.ToSudokuCoords()}. Removing other candidates in block, row and column";
     }
 }

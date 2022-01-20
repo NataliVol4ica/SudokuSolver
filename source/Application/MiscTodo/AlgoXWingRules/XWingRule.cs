@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using Application.Models;
 
-namespace Application.MiscTodo.AlgoHiddenSinglesRules
+namespace Application.MiscTodo.AlgoXWingRules
 {
-    public class HiddenSinglesRule : IRule
+    public class XWingRule : IRule
     {
-        private readonly List<BaseHiddenSingleRule> _rules = new()
+        private readonly List<BaseXWingRule> _rules = new()
         {
-            new HiddenSingleInARowRule(),
-            new HiddenSingleInAColumnRule(),
-            new HiddenSingleInABlockRule(),
+            new RowXWingRule(),
+            new ColumnXWingRule(),
         };
 
         public int Apply(Context context)

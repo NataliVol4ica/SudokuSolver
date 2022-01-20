@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Application.Models;
 
-namespace Application.MiscTodo.AlgoFullHouseRules
+namespace Application.MiscTodo.AlgoNakedSingleRules
 {
     public class NakedSingleRule : IRule
     {
