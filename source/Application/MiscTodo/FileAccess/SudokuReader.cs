@@ -4,6 +4,7 @@ using Application.Models.SudokuAlgo;
 
 namespace Application.MiscTodo.FileAccess
 {
+    //todo move elsewhere (own project?)
     public class SudokuReader
     {
         private readonly Context _context;

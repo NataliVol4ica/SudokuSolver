@@ -5,6 +5,8 @@ using Application.Models.SudokuAlgo.History.SolutionHistoryNavigation;
 
 namespace ConsoleUserInterface
 {
+
+    //todo: allow to switch simple/detailed sudoku mode.
     public class UserConsole
     {
         enum Command

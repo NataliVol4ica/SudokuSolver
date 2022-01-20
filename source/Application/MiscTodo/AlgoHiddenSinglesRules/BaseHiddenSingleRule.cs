@@ -7,7 +7,7 @@ using Application.Tools.Enums;
 
 namespace Application.MiscTodo.AlgoCandidateScannerRules
 {
-    public abstract class BaseSinglePossiblePositionRule
+    public abstract class BaseHiddenSingleRule
     {
         private int MaxDigits = 9;//todo 9
         protected int ApplyToSingle(SudokuCell[] setOfCells, Context context, string entityName, Func<int, Point> generatePosition)

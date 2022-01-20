@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
+using Application.MiscTodo.AlgoCandidateScannerRules;
 using Application.Models;
 
-namespace Application.MiscTodo.AlgoCandidateScannerRules
+namespace Application.MiscTodo.AlgoNakedSinglesRules
 {
-    public class SinglePossiblePositionInABlockRule : BaseSinglePossiblePositionRule
+    public class HiddenSingleInABlockRule : BaseHiddenSingleRule
     {
         public override int ApplyToAll(Context context)
         {

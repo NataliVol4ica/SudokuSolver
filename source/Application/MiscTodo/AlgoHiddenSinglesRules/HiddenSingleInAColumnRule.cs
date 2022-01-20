@@ -3,7 +3,7 @@ using Application.Models;
 
 namespace Application.MiscTodo.AlgoCandidateScannerRules
 {
-    public class SinglePossiblePositionInAColumnRule : BaseSinglePossiblePositionRule
+    public class HiddenSingleInAColumnRule : BaseHiddenSingleRule
     {
         public override int ApplyToAll(Context context)
         {
