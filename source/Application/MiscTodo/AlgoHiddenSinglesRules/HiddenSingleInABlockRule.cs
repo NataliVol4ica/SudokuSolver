@@ -15,7 +15,7 @@ namespace Application.MiscTodo.AlgoNakedSinglesRules
                 var setOfCells = context.SudokuUnderSolution.PlainBlock(blockId);
                 numOfNewValueCells += ApplyToSingle(
                     setOfCells,
-                    context, 
+                    context,
                     "BLOCK",
                     (entityId) => new Point(blockIdForFunc / 3 * 3 + entityId / 3, blockIdForFunc % 3 * 3 + entityId % 3));
             }

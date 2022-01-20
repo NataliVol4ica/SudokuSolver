@@ -19,7 +19,7 @@ namespace ConsoleUserInterface
                     PrintBorder("   ");
                     PrintText(" \n");
                 }
-                PrintBorder($" {(char) ('A' + i)} ");
+                PrintBorder($" {(char)('A' + i)} ");
                 PrintText(" ");
                 for (int j = 0; j < 9; j++)//todo 9
                 {
@@ -53,7 +53,7 @@ namespace ConsoleUserInterface
                     PrintBorder("  ");
             }
 
-            PrintText( "\n");
+            PrintText("\n");
         }
 
         private static bool IsCellChanged(int x, int y, Point? changedCell)
@@ -77,8 +77,8 @@ namespace ConsoleUserInterface
         {
             if (!isChangedCell)
             {
-               Console.Write(text);
-               return;
+                Console.Write(text);
+                return;
             }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(text);

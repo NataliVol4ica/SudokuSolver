@@ -12,9 +12,9 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
         protected int ProcessPair(List<int> firstCellCandidates, Point firstCellAbsolutePosition, Point secondCellAbsolutePosition, Context context)
         {
             return AlgoSharedTools.Tools.RemoveCandidatesForPairs(
-                firstCellCandidates, 
-                firstCellAbsolutePosition, 
-                secondCellAbsolutePosition, 
+                firstCellCandidates,
+                firstCellAbsolutePosition,
+                secondCellAbsolutePosition,
                 context,
                 Message(firstCellCandidates, firstCellAbsolutePosition, secondCellAbsolutePosition));
         }

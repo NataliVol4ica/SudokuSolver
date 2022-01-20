@@ -13,8 +13,8 @@ namespace Application.MiscTodo.AlgoCandidateScannerRules
                 var rowIdForFunc = rowId;
                 numOfNewValueCells += ApplyToSingle(
                     context.SudokuUnderSolution.Row(rowId),
-                    context, 
-                    "ROW", 
+                    context,
+                    "ROW",
                     (entityId) => new Point(rowIdForFunc, entityId));
             }
 

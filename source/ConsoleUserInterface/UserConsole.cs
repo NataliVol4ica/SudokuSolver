@@ -28,7 +28,7 @@ namespace ConsoleUserInterface
         {
             //todo split into smaller methods
             Command command;
-            
+
             Console.WriteLine($"Sudoku is fully solved? {solution.IsSudokuSolved}");
 
             var historyViewer = SolutionHistoryNavigator.Create(solution.History);

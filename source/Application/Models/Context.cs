@@ -9,7 +9,8 @@ namespace Application.Models
     public class Context
     {
         private Sudoku _sudokuUnderSolution;
-        public Sudoku SudokuUnderSolution {
+        public Sudoku SudokuUnderSolution
+        {
             get => _sudokuUnderSolution;
             set => _sudokuUnderSolution = SudokuUnderSolution is null ? value : _sudokuUnderSolution;
         }

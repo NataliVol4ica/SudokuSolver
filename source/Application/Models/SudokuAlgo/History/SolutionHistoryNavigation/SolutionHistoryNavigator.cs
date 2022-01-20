@@ -32,14 +32,14 @@ namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
                 .GroupBy(e => e.ContextId);
 
             _viewEntries =
-                 history.SetValueEntries.Where(e=>e.Level != HistoryEntryLevel.SudokuInit)
+                 history.SetValueEntries.Where(e => e.Level != HistoryEntryLevel.SudokuInit)
                      .FullJoin(candidateEntries,
                     valueSet => valueSet.ContextId,
                     candidateRm => candidateRm.Key,
                     valueSet => new SolutionHistoryNavigationEntry(valueSet),
                     candidateRm => new SolutionHistoryNavigationEntry(candidateRm.ToList()),
                     (valueSet, candidateRm) => new SolutionHistoryNavigationEntry(valueSet, candidateRm.ToList()))
-                    .OrderBy(e=>e.TimeStamp) //todo verify if its needed
+                    .OrderBy(e => e.TimeStamp) //todo verify if its needed
                     .ToList();
             _viewEntries[0].IsFirst = true;
             _viewEntries[^1].IsLast = true;

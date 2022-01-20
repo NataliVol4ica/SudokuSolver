@@ -8,7 +8,7 @@ namespace Application.Models.SudokuAlgo
 {
     public class Sudoku
     {
-        public Point Size { get;  } = new Point(9, 9);
+        public Point Size { get; } = new Point(9, 9);
 
         //comes from outside
         private readonly SudokuCell[,] _cells;
@@ -59,7 +59,7 @@ namespace Application.Models.SudokuAlgo
                 }
             }
         }
-        
+
         //todo why duplicate main constructor?
         private Sudoku(SudokuCell[,] source)
         {
@@ -78,7 +78,7 @@ namespace Application.Models.SudokuAlgo
         }
 
         #endregion Constructor
-        
+
         #region Rows, Columns and Blocks
 
         //todo protect ids
