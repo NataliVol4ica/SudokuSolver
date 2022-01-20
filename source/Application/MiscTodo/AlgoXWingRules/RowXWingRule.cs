@@ -64,12 +64,21 @@ namespace Application.MiscTodo.AlgoXWingRules
                                           $"Positions {row1.Positions[0].ToSudokuCoords()} and {row1.Positions[1].ToSudokuCoords()}, " +
                                           $"Positions {row2.Positions[0].ToSudokuCoords()} and {row2.Positions[1].ToSudokuCoords()}";
                         Console.WriteLine(message);
-                        numOfChanges += ProcessXWingColumns(
+                        var numOfChangedIterationCells = ProcessXWingColumns(
                             context,
                             digit,
                             new List<int> { row1.Positions[0].Y, row1.Positions[1].Y },
                             new List<int> { rowId1, rowId2 },
                             message);
+                        if (numOfChangedIterationCells > 0)
+                        {
+                            //todo. +1?
+                            context.History.AddHighlightCandidateEntry(digit + 1, context, row1.Positions[0], message);
+                            context.History.AddHighlightCandidateEntry(digit + 1, context, row1.Positions[1], message);
+                            context.History.AddHighlightCandidateEntry(digit + 1, context, row2.Positions[0], message);
+                            context.History.AddHighlightCandidateEntry(digit + 1, context, row2.Positions[1], message);
+                        }
+                        numOfChanges += numOfChangedIterationCells;
                     }
                 }
             }

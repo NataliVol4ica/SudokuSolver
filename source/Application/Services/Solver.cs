@@ -40,13 +40,12 @@ namespace Application.Services
 
         private bool ApplyRules()
         {
-            var numOfChanges = 0;
-
             foreach (var rule in _rules)
             {
-                numOfChanges += rule.Apply(_context);
+                if (rule.Apply(_context) > 0)
+                    return true; //so that we apply rules according to their hierarchy //todo do the same inside rules? is it worth?
             };
-            return numOfChanges > 0;
+            return false;
         }
     }
 }

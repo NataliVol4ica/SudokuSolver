@@ -141,7 +141,7 @@ namespace Application.Models.SudokuAlgo
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    cells[i, j] = _cells[i, j].Clone();
+                    cells[i, j] = _cells[i, j].DeepCopy();
                 }
             }
 

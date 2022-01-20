@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Application.Extensions;
 using Application.MiscTodo.AlgoOnValueSetCandidatesSetters;
 using Application.Tools.Enums;
 
@@ -81,9 +82,9 @@ namespace Application.Models.SudokuAlgo
             return true;
         }
 
-        public SudokuCell Clone()
+        public SudokuCell DeepCopy()
         {
-            return new SudokuCell(Value, _candidates, _numOfRemainingCandidates);
+            return new SudokuCell(Value, _candidates.Clone(), _numOfRemainingCandidates);
         }
 
         public override string ToString()

@@ -26,7 +26,8 @@ namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
 
         public Sudoku SudokuSnapshot { get; set; }
         public ValuePosition CellValueSet { get; set; }
-        public List<ValuePosition> CandidateValueRemoved { get; set; }
+        public List<ValuePosition> RemovedCandidates { get; set; }
+        public List<ValuePosition> HighlightedCandidates { get; set; }
         public DateTime TimeStamp { get; }
 
         public SolutionHistoryNavigationEntry(ValueSetSolutionHistoryEntry source)
@@ -43,26 +44,21 @@ namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
             TimeStamp = source.First().TimeStamp;
             //todo
             SudokuSnapshot = source[^1].SudokuSnapshot;
-            CandidateValueRemoved = ToViewEntries(source);
+            RemovedCandidates = ToViewEntries(source);
             _message = source.FirstOrDefault()?.Message;
         }
 
-        public SolutionHistoryNavigationEntry(ValueSetSolutionHistoryEntry valueSetSource, List<CandidateRemovedSolutionHistoryEntry> candidateRmSource)
+        public SolutionHistoryNavigationEntry(List<CandidateHighlightedSolutionHistoryEntry> source)
         {
-            TimeStamp = valueSetSource.TimeStamp;
-            SudokuSnapshot = candidateRmSource[^1].SudokuSnapshot ?? valueSetSource.SudokuSnapshot;
-            CellValueSet = ToViewEntry(valueSetSource);
-            CandidateValueRemoved = ToViewEntries(candidateRmSource);
-            _message = $"A digit '{valueSetSource.Digit}' has been placed at {valueSetSource.Position.ToSudokuCoords()} because {valueSetSource.Reason}." +
-                       $" It has triggered {candidateRmSource?.Count ?? 0} candidates removal";
+            //todo validate null or empty list
+            TimeStamp = source.First().TimeStamp;
+            //todo
+            SudokuSnapshot = source[^1].SudokuSnapshot;
+            HighlightedCandidates = ToViewEntries(source);
+            _message = source.FirstOrDefault()?.Message;
         }
 
-        private ValuePosition ToViewEntry(ValueSetSolutionHistoryEntry source)
-        {
-            return new ValuePosition { Value = source.Digit, Position = source.Position };
-        }
-
-        private List<ValuePosition> ToViewEntries(List<CandidateRemovedSolutionHistoryEntry> source)
+        private static List<ValuePosition> ToViewEntries<T>(List<T> source) where T: BaseCandidateHistoryEntry
         {
             return source
                 .Select(e => new ValuePosition
@@ -73,5 +69,23 @@ namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
                 .ToList();
         }
 
+        private ValuePosition ToViewEntry(ValueSetSolutionHistoryEntry source)
+        {
+            return new ValuePosition { Value = source.Digit, Position = source.Position };
+        }
+
+        //removed candidates snapshot has high prio
+        public void AddRemovedCandidates(List<CandidateRemovedSolutionHistoryEntry> source)
+        {
+            SudokuSnapshot = source[^1].SudokuSnapshot ?? SudokuSnapshot;
+            RemovedCandidates = ToViewEntries(source);
+        }
+
+        //highlighted candidate snapshot has low prio
+        public void AddHighlightedCandidates(List<CandidateHighlightedSolutionHistoryEntry> source)
+        {
+            SudokuSnapshot ??= source[^1].SudokuSnapshot;
+            HighlightedCandidates = ToViewEntries(source);
+        }
     }
 }

@@ -17,14 +17,14 @@ namespace ConsoleUserInterface
             if (entry.SudokuSnapshot != null)
             {
                 if (isDetailed)
-                    ExtendedSudokuPrinter.Print(entry.SudokuSnapshot, entry.CandidateValueRemoved,
+                    ExtendedSudokuPrinter.Print(entry.SudokuSnapshot, entry.RemovedCandidates,
+                        entry.HighlightedCandidates,
                         entry.CellValueSet?.Position);
                 else
                 {
                     BasicSudokuPrinter.Print(entry.SudokuSnapshot, entry.CellValueSet?.Position);
                 }
             }
-            //TODO handle other cases print
         }
     }
 }
