@@ -44,15 +44,14 @@ namespace Application.Models.SudokuAlgo
             _numOfRemainingCandidates = numOfRemainingCandidates;
         }
 
-        public bool RemoveCandidate(int digit, Context context, Point position, string message = null)
+        public bool RemoveCandidate(int candidateId, Context context, Point position, string message = null)
         {
-            ValidateDigit(digit);
-            var index = digit - 1;
-            if (_candidates[index] == false)
+            ValidateCandidate(candidateId);
+            if (_candidates[candidateId] == false)
                 return false;
-            _candidates[index] = false;
+            _candidates[candidateId] = false;
 
-            context.History.AddRemoveCandidateEntry(digit, context, position, message);
+            context.History.AddRemoveCandidateEntry(candidateId + 1, context, position, message);
 
             _numOfRemainingCandidates--;
             return true;
@@ -92,11 +91,18 @@ namespace Application.Models.SudokuAlgo
             return HasValue ? Value.ToString() : ".";
         }
 
-        private bool IsValidDigit(int digit) => digit > 0 && digit <= MaxDigits;
+        private bool IsValidDigit(int digit) => digit is > 0 and <= MaxDigits;
         private void ValidateDigit(int digit)
         {
             if (!IsValidDigit(digit))
                 throw new Exception($"Digit {digit} cannot be set as cell value"); //todo custom exception type
+        }
+
+        private bool IsValidCandidateId(int candidateId) => candidateId is >= 0 and < MaxDigits;
+        private void ValidateCandidate(int candidateId)
+        {
+            if (!IsValidCandidateId(candidateId))
+                throw new Exception($"Digit {candidateId + 1} cannot be set as cell value"); //todo custom exception type
         }
 
         public bool HasCandidate(int candidateId) => _candidates[candidateId]; //todo validate

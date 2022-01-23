@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Application.Models;
+using Application.Tools;
 using Application.Tools.Enums;
 
 namespace Application.MiscTodo.AlgoHiddenPairsRules

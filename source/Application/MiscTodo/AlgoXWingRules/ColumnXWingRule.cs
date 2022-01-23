@@ -35,7 +35,7 @@ namespace Application.MiscTodo.AlgoXWingRules
             return statistics.Select(s => s.NumOfOccurencies == 2 ? s : null).ToList();
         }
 
-        private int ProcessXWingRows(Context context, int digitToRemove, List<int> rowIds, List<int> columnIdsToRemain, string message)
+        private int ProcessXWingRows(Context context, int candidateToRemove, List<int> rowIds, List<int> columnIdsToRemain, string message)
         {
             var numOfChanges = 0;
 
@@ -46,7 +46,7 @@ namespace Application.MiscTodo.AlgoXWingRules
                 {
                     if (columnIdsToRemain.Contains(columnId))
                         continue;
-                    if (context.SudokuUnderSolution[rowId, columnId].RemoveCandidate(digitToRemove + 1, context, new Point(rowId, columnId), message))
+                    if (context.SudokuUnderSolution[rowId, columnId].RemoveCandidate(candidateToRemove, context, new Point(rowId, columnId), message))
                         numOfChanges++;
                 }
             }
@@ -69,36 +69,36 @@ namespace Application.MiscTodo.AlgoXWingRules
                 allStatistics.Add(GetColumnStatistics(columnId, context));
             }
 
-            for (int digit = 0; digit < 9; digit++)
+            for (int candidateId = 0; candidateId < 9; candidateId++)
             {
                 for (int columnId1 = 0; columnId1 < 9; columnId1++) //todo 9
                 {
-                    if (allStatistics[columnId1][digit] is null)
+                    if (allStatistics[columnId1][candidateId] is null)
                         continue;
-                    var column1 = allStatistics[columnId1][digit];
+                    var column1 = allStatistics[columnId1][candidateId];
                     for (int columnId2 = columnId1 + 1; columnId2 < 9; columnId2++) //todo 9
                     {
-                        if (allStatistics[columnId2][digit] is null)
+                        if (allStatistics[columnId2][candidateId] is null)
                             continue;
-                        var column2 = allStatistics[columnId2][digit];
+                        var column2 = allStatistics[columnId2][candidateId];
                         if (!AreInSquare(column1.Positions, column2.Positions))
                             continue;
                         context.InitNewContextId();
-                        var message = $"Found Vertical XWing. Digit {digit + 1}. " +
+                        var message = $"Found Vertical XWing. Digit {candidateId + 1}. " +
                                           $"Positions {column1.Positions[0].ToSudokuCoords()} and {column1.Positions[1].ToSudokuCoords()}, " +
                                           $"Positions {column2.Positions[0].ToSudokuCoords()} and {column2.Positions[1].ToSudokuCoords()}";
                         var numOfChangedIterationCells = ProcessXWingRows(
                             context,
-                            digit,
+                            candidateId,
                             new List<int> { column1.Positions[0].X, column1.Positions[1].X },
                             new List<int> { columnId1, columnId2 },
                             message);
                         if (numOfChangedIterationCells > 0)
                         {
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, column1.Positions[0], message);
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, column1.Positions[1], message);
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, column2.Positions[0], message);
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, column2.Positions[1], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, column1.Positions[0], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, column1.Positions[1], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, column2.Positions[0], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, column2.Positions[1], message);
                         }
                         numOfChanges += numOfChangedIterationCells;
                     }

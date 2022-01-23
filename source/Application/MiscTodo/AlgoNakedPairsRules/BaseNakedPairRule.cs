@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Application.MiscTodo.AlgoSharedTools;
 using Application.Models;
 using Application.Tools;
 
@@ -13,12 +14,7 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
         {
             var message = Message(candidates, firstCellAbsolutePosition, secondCellAbsolutePosition);
 
-            var numOfChanges = AlgoSharedTools.Tools.RemoveCandidatesForPairs(
-                candidates,
-                firstCellAbsolutePosition,
-                secondCellAbsolutePosition,
-                context,
-                message);
+            var numOfChanges = context.RemoveCandidatesForPairs(candidates, firstCellAbsolutePosition, secondCellAbsolutePosition, message);
 
             if (numOfChanges > 0)
             {

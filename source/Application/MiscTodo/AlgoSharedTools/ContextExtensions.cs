@@ -4,25 +4,24 @@ using Application.Models;
 
 namespace Application.MiscTodo.AlgoSharedTools
 {
-    public static class Tools
+    public static class ContextExtensions
     {
-        public static int RemoveCandidatesForPairs(List<int> candidates, Point firstAbsolutePoint,
-            Point secondAbsolutePoint, Context context, string message)
+        public static int RemoveCandidatesForPairs(this Context context, List<int> candidates, Point firstAbsolutePoint, Point secondAbsolutePoint, string message)
         {
             var numOfChanges = 0;
-            if (IsHorizontalPair(firstAbsolutePoint, secondAbsolutePoint))
+            if (Utilities.IsHorizontalPair(firstAbsolutePoint, secondAbsolutePoint))
             {
                 numOfChanges += ProcessHorizontalPair(candidates, firstAbsolutePoint, secondAbsolutePoint, context,
                     message);
             }
 
-            if (IsVerticalPair(firstAbsolutePoint, secondAbsolutePoint))
+            if (Utilities.IsVerticalPair(firstAbsolutePoint, secondAbsolutePoint))
             {
                 numOfChanges +=
                     ProcessVerticalPair(candidates, firstAbsolutePoint, secondAbsolutePoint, context, message);
             }
 
-            if (IsSameBlockPair(firstAbsolutePoint, secondAbsolutePoint))
+            if (Utilities.IsSameBlockPair(firstAbsolutePoint, secondAbsolutePoint))
             {
                 numOfChanges += ProcessBlockPair(candidates, firstAbsolutePoint, secondAbsolutePoint, context, message);
             }
@@ -45,7 +44,7 @@ namespace Application.MiscTodo.AlgoSharedTools
                     continue;
                 foreach (var candidate in candidates)
                 {
-                    if (row[colId].RemoveCandidate(candidate + 1, context, currentAbsolutePos, message))
+                    if (row[colId].RemoveCandidate(candidate, context, currentAbsolutePos, message))
                         numOfChanges++;
                 }
             }
@@ -68,7 +67,7 @@ namespace Application.MiscTodo.AlgoSharedTools
                     continue;
                 foreach (var candidate in candidates)
                 {
-                    if (column[rowId].RemoveCandidate(candidate + 1, context, currentAbsolutePos, message))
+                    if (column[rowId].RemoveCandidate(candidate, context, currentAbsolutePos, message))
                         numOfChanges++;
                 }
             }
@@ -94,7 +93,7 @@ namespace Application.MiscTodo.AlgoSharedTools
                         continue;
                     foreach (var candidate in candidates)
                     {
-                        if (block[blockI, blockJ].RemoveCandidate(candidate + 1, context, currentAbsolutePos, message))
+                        if (block[blockI, blockJ].RemoveCandidate(candidate, context, currentAbsolutePos, message))
                             numOfChanges++;
                     }
                 }
@@ -103,19 +102,20 @@ namespace Application.MiscTodo.AlgoSharedTools
             return numOfChanges;
         }
 
-        private static bool IsHorizontalPair(Point p1, Point p2)
+        public static int RemoveCellCandidatesExcept(this Context context, Point cellPosition, List<int> except, string message)
         {
-            return p1.X == p2.X;
-        }
+            var numOfChanges = 0;
+            var cell = context.SudokuUnderSolution[cellPosition];
+            //todo 9
+            for (int candidate = 0; candidate < 9; candidate++)
+            {
+                if (except.Contains(candidate))
+                    continue;
+                if (cell.RemoveCandidate(candidate, context, cellPosition, message))
+                    numOfChanges++;
+            }
 
-        private static bool IsVerticalPair(Point p1, Point p2)
-        {
-            return p1.Y == p2.Y;
-        }
-
-        private static bool IsSameBlockPair(Point p1, Point p2)
-        {
-            return p1.X / 3 == p2.X / 3 && p1.Y / 3 == p2.Y / 3;
+            return numOfChanges;
         }
     }
 }

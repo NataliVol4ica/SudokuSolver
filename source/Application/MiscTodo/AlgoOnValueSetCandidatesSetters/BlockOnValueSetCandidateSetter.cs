@@ -7,6 +7,7 @@ namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
     {
         public override void Perform(int newDigit, Context context)
         {
+            var candidateId = newDigit - 1;
             var block = context.SudokuUnderSolution.Block(context.CellUnderAction);
             for (int i = 0; i < 3; i++) //todo 9
             {
@@ -15,7 +16,7 @@ namespace Application.MiscTodo.AlgoOnValueSetCandidatesSetters
                     var cell = block[i, j];
                     if (cell.HasValue)
                         continue;
-                    cell.RemoveCandidate(newDigit,
+                    cell.RemoveCandidate(candidateId,
                         context,
                         new Point(context.CellUnderAction.X / 3 * 3 + i, context.CellUnderAction.Y / 3 * 3 + j));
                 }

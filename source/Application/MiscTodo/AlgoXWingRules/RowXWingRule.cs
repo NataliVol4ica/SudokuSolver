@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Application.Models;
@@ -46,7 +45,7 @@ namespace Application.MiscTodo.AlgoXWingRules
                 {
                     if (rowIdsToRemain.Contains(rowId))
                         continue;
-                    if (context.SudokuUnderSolution[rowId, columnId].RemoveCandidate(digitToRemove + 1, context, new Point(rowId, columnId), message))
+                    if (context.SudokuUnderSolution[rowId, columnId].RemoveCandidate(digitToRemove, context, new Point(rowId, columnId), message))
                         numOfChanges++;
                 }
             }
@@ -70,36 +69,36 @@ namespace Application.MiscTodo.AlgoXWingRules
                 allStatistics.Add(GetRowStatistics(rowId, context));
             }
 
-            for (int digit = 0; digit < 9; digit++)
+            for (int candidateId = 0; candidateId < 9; candidateId++)
             {
                 for (int rowId1 = 0; rowId1 < 9; rowId1++) //todo 9
                 {
-                    if (allStatistics[rowId1][digit] is null)
+                    if (allStatistics[rowId1][candidateId] is null)
                         continue;
-                    var row1 = allStatistics[rowId1][digit];
+                    var row1 = allStatistics[rowId1][candidateId];
                     for (int rowId2 = rowId1 + 1; rowId2 < 9; rowId2++) //todo 9
                     {
-                        if (allStatistics[rowId2][digit] is null)
+                        if (allStatistics[rowId2][candidateId] is null)
                             continue;
-                        var row2 = allStatistics[rowId2][digit];
+                        var row2 = allStatistics[rowId2][candidateId];
                         if (!AreInSquare(row1.Positions, row2.Positions))
                             continue;
                         context.InitNewContextId();
-                        var message = $"Found Horizontal XWing. Digit {digit + 1}. " +
+                        var message = $"Found Horizontal XWing. Digit {candidateId + 1}. " +
                                           $"Positions {row1.Positions[0].ToSudokuCoords()} and {row1.Positions[1].ToSudokuCoords()}, " +
                                           $"Positions {row2.Positions[0].ToSudokuCoords()} and {row2.Positions[1].ToSudokuCoords()}";
                         var numOfChangedIterationCells = ProcessXWingColumns(
                             context,
-                            digit,
+                            candidateId,
                             new List<int> { row1.Positions[0].Y, row1.Positions[1].Y },
                             new List<int> { rowId1, rowId2 },
                             message);
                         if (numOfChangedIterationCells > 0)
                         {
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, row1.Positions[0], message);
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, row1.Positions[1], message);
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, row2.Positions[0], message);
-                            context.History.AddHighlightCandidateEntry(digit + 1, context, row2.Positions[1], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, row1.Positions[0], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, row1.Positions[1], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, row2.Positions[0], message);
+                            context.History.AddHighlightCandidateEntry(candidateId + 1, context, row2.Positions[1], message);
                         }
                         numOfChanges += numOfChangedIterationCells;
                     }
