@@ -8,6 +8,7 @@ using Application.Tools.Enums;
 
 namespace Application.MiscTodo.AlgoXWingRules
 {
+    //todo decompose
     public class RowXWingRule : BaseXWingRule
     {
         private List<DigitStatistics> GetRowStatistics(int rowId, Context context)
@@ -32,6 +33,30 @@ namespace Application.MiscTodo.AlgoXWingRules
             }
 
             return statistics.Select(s => s.NumOfOccurencies == 2 ? s : null).ToList();
+        }
+
+        private int ProcessXWingColumns(Context context, int digitToRemove, List<int> columnIds, List<int> rowIdsToRemain, string message)
+        {
+            var numOfChanges = 0;
+
+            for (int columnListId = 0; columnListId < columnIds.Count; columnListId++)
+            {
+                var columnId = columnIds[columnListId];
+                for (int rowId = 0; rowId < 9; rowId++) //todo 9
+                {
+                    if (rowIdsToRemain.Contains(rowId))
+                        continue;
+                    if (context.SudokuUnderSolution[rowId, columnId].RemoveCandidate(digitToRemove + 1, context, new Point(rowId, columnId), message))
+                        numOfChanges++;
+                }
+            }
+
+            return numOfChanges;
+        }
+
+        protected bool AreInSquare(List<Point> pointSet1, List<Point> pointSet2)
+        {
+            return pointSet1.Select(s => s.Y).SequenceEqual(pointSet2.Select(s => s.Y));
         }
 
         public override int ApplyToAll(Context context)
@@ -63,7 +88,6 @@ namespace Application.MiscTodo.AlgoXWingRules
                         var message = $"Found Horizontal XWing. Digit {digit + 1}. " +
                                           $"Positions {row1.Positions[0].ToSudokuCoords()} and {row1.Positions[1].ToSudokuCoords()}, " +
                                           $"Positions {row2.Positions[0].ToSudokuCoords()} and {row2.Positions[1].ToSudokuCoords()}";
-                        Console.WriteLine(message);
                         var numOfChangedIterationCells = ProcessXWingColumns(
                             context,
                             digit,
@@ -72,7 +96,6 @@ namespace Application.MiscTodo.AlgoXWingRules
                             message);
                         if (numOfChangedIterationCells > 0)
                         {
-                            //todo. +1?
                             context.History.AddHighlightCandidateEntry(digit + 1, context, row1.Positions[0], message);
                             context.History.AddHighlightCandidateEntry(digit + 1, context, row1.Positions[1], message);
                             context.History.AddHighlightCandidateEntry(digit + 1, context, row2.Positions[0], message);
@@ -84,31 +107,6 @@ namespace Application.MiscTodo.AlgoXWingRules
             }
 
             return numOfChanges;
-        }
-
-        private int ProcessXWingColumns(Context context, int digitToRemove, List<int> columnIds, List<int> rowIdsToRemain, string message)
-        {
-            var numOfChanges = 0;
-
-            for (int columnListId = 0; columnListId < columnIds.Count; columnListId++)
-            {
-                var columnId = columnIds[columnListId];
-                for (int rowId = 0; rowId < 9; rowId++) //todo 9
-                {
-                    if (rowIdsToRemain.Contains(rowId))
-                        continue;
-                    if (context.SudokuUnderSolution[rowId, columnId].RemoveCandidate(digitToRemove + 1, context, new Point(rowId, columnId), message))
-                        numOfChanges++;
-                }
-            }
-
-
-            return numOfChanges;
-        }
-
-        private bool AreInSquare(List<Point> pointSet1, List<Point> pointSet2)
-        {
-            return pointSet1.Select(s => s.Y).SequenceEqual(pointSet2.Select(s => s.Y));
         }
     }
 }
