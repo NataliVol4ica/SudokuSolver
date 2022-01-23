@@ -9,14 +9,27 @@ namespace Application.MiscTodo.AlgoNakedPairsRules
     {
         public abstract int ApplyToAll(Context context);
 
-        protected int ProcessPair(List<int> firstCellCandidates, Point firstCellAbsolutePosition, Point secondCellAbsolutePosition, Context context)
+        protected int ProcessPair(List<int> candidates, Point firstCellAbsolutePosition, Point secondCellAbsolutePosition, Context context)
         {
-            return AlgoSharedTools.Tools.RemoveCandidatesForPairs(
-                firstCellCandidates,
+            var message = Message(candidates, firstCellAbsolutePosition, secondCellAbsolutePosition);
+
+            var numOfChanges = AlgoSharedTools.Tools.RemoveCandidatesForPairs(
+                candidates,
                 firstCellAbsolutePosition,
                 secondCellAbsolutePosition,
                 context,
-                Message(firstCellCandidates, firstCellAbsolutePosition, secondCellAbsolutePosition));
+                message);
+
+            if (numOfChanges > 0)
+            {
+                foreach (var candidate in candidates)
+                {
+                    context.History.AddHighlightCandidateEntry(candidate + 1, context, firstCellAbsolutePosition, message);
+                    context.History.AddHighlightCandidateEntry(candidate + 1, context, secondCellAbsolutePosition, message);
+                }
+            }
+
+            return numOfChanges;
         }
 
         private string Message(List<int> candidates, Point firstAbsolutePoint, Point secondAbsolutePoint) =>

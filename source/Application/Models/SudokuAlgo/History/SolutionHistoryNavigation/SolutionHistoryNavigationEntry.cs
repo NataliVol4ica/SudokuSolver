@@ -58,7 +58,7 @@ namespace Application.Models.SudokuAlgo.History.SolutionHistoryNavigation
             _message = source.FirstOrDefault()?.Message;
         }
 
-        private static List<ValuePosition> ToViewEntries<T>(List<T> source) where T: BaseCandidateHistoryEntry
+        private static List<ValuePosition> ToViewEntries<T>(List<T> source) where T : BaseCandidateHistoryEntry
         {
             return source
                 .Select(e => new ValuePosition

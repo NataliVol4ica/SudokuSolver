@@ -29,13 +29,25 @@ namespace Application.MiscTodo.AlgoHiddenPairsRules
                         continue;//we dont want to process hidden pairs as naked pairs
                     //reaching this point means that we have found a hidden pair
                     context.InitNewContextId();
-                    numOfChanges += ProcessPair(new List<int> { digit1, digit2 },
+                    var pairChanges = ProcessPair(new List<int> { digit1, digit2 },
                         statistics[digit1].Positions[0],
                         statistics[digit1].Positions[1],
                         context
                     );
+
+                    if (pairChanges > 0)
+                    {
+                        var message = Message(new List<int> { digit1, digit2 }, statistics[digit1].Positions[0], statistics[digit1].Positions[1]);
+                        context.History.AddHighlightCandidateEntry(digit1 + 1, context, statistics[digit1].Positions[0], message);
+                        context.History.AddHighlightCandidateEntry(digit1 + 1, context, statistics[digit1].Positions[1], message);
+                        context.History.AddHighlightCandidateEntry(digit2 + 1, context, statistics[digit2].Positions[0], message);
+                        context.History.AddHighlightCandidateEntry(digit2 + 1, context, statistics[digit2].Positions[1], message);
+                    }
+
+                    numOfChanges += pairChanges;
                 }
             }
+
 
             return numOfChanges;
         }

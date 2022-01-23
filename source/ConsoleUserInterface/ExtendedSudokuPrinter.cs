@@ -9,6 +9,7 @@ namespace ConsoleUserInterface
 {
     public static class ExtendedSudokuPrinter
     {
+        //todo if value was set in a cell - also highlight same digits around the board?
         public static void Print(Sudoku sudoku, List<ValuePosition> removedCandidates = null, List<ValuePosition> highlightedCandidates = null, Point? changedCell = null)
         {
             PrintHorizontalDigits();
@@ -27,7 +28,7 @@ namespace ConsoleUserInterface
                                 removedCandidates?.Where(c => c.Position.X == rowId && c.Position.Y == columnId).ToList();
 
                             var highlightedCandidatesInCell =
-                                highlightedCandidates?.Where(c=> c.Position.X == rowId && c.Position.Y == columnId).ToList();
+                                highlightedCandidates?.Where(c => c.Position.X == rowId && c.Position.Y == columnId).ToList();
 
                             PrintSudokuCell(cells[rowId, columnId], candidateRowId, IsCellChanged(rowId, columnId, changedCell), removedCandidatesInCell, highlightedCandidatesInCell);
 

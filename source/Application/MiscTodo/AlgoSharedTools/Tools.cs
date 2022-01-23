@@ -27,15 +27,6 @@ namespace Application.MiscTodo.AlgoSharedTools
                 numOfChanges += ProcessBlockPair(candidates, firstAbsolutePoint, secondAbsolutePoint, context, message);
             }
 
-            if (numOfChanges > 0)
-            {
-                foreach (var candidate in candidates)
-                {
-                    context.History.AddHighlightCandidateEntry(candidate + 1, context, firstAbsolutePoint, message);
-                    context.History.AddHighlightCandidateEntry(candidate + 1, context, secondAbsolutePoint, message);
-                }
-            }
-
             return numOfChanges;
         }
 
