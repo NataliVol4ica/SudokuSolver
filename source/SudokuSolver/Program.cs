@@ -10,8 +10,7 @@ namespace SudokuSolver
     {
         public static void Main()
         {
-            string path = @"D:\DotNet\SudokuSolver\samples\Classic\BestClaimedByYoutube00_3x3.sud";
-            //string path = @"D:\DotNet\SudokuSolver\samples\Classic\Simple00_3x3.sud";
+            string path = @"D:\DotNet\SudokuSolver\samples\Classic\Advanced01_3x3.sud";
             var context = new Context();
             new SudokuReader(context).ReadFrom(path);
             ExtendedSudokuPrinter.Print(context.SudokuUnderSolution);
